@@ -34,8 +34,7 @@ SUFFIXES = .scm .go
 .scm.go:
 	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -o "$@" "$<"
 
-SOURCES = conmanv4/logging.scm \
-          conmanv4/conman.scm \
+SOURCES = conmanv4.scm \
           conmanv4/cemail.scm \
           conmanv4/utilities.scm
 
@@ -55,15 +54,23 @@ AM_SCM_LOG_FLAGS = --no-auto-compile -L "$(top_srcdir)"
 
 AM_TESTS_ENVIRONMENT = abs_top_srcdir="$(abs_top_srcdir)"
 
-info_TEXINFOS = doc/conmanv4.texi
+info_TEXINFOS = doc/conmanv4.texi \
+                doc/version.texi
 dvi: # Don't build dvi docs
 
 EXTRA_DIST += README.org \
               README \
               HACKING \
               COPYING \
+              doc/conmanv4.info \
+              doc/.dirstamp \
+              doc/stamp-vti \
+              AUTHORS \
+              ChangeLog \
               guix.scm \
               hall.scm \
+              bin/smtp-cli \
+              scripts/las.png \
               build-aux/test-driver.scm \
               $(TESTS)
 

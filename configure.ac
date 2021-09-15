@@ -3,10 +3,10 @@ dnl -*- Autoconf -*-
 
 AC_INIT(conmanv4, 0.1)
 AC_SUBST(HVERSION, "\"0.1\"")
-AC_SUBST(AUTHOR, "\"mbcladwell\"")
+AC_SUBST(AUTHOR, "\"Mortimer Cladwell\"")
 AC_SUBST(COPYRIGHT, "'(2021)")
 AC_SUBST(LICENSE, gpl3+)
-AC_CONFIG_SRCDIR(conmanv4)
+AC_CONFIG_SRCDIR(conmanv4.scm)
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.12 gnu silent-rules subdir-objects  color-tests parallel-tests -Woverride -Wno-portability])
 AM_SILENT_RULES([yes])

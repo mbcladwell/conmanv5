@@ -7,6 +7,11 @@ direct copy of conmanv3
 get rid of duplicate emails
 
 
+Must:
+sudo apt-get install libio-socket-ssl-perl libdigest-hmac-perl libterm-readkey-perl libmime-lite-perl libfile-libmagic-perl libio-socket-inet6-perl
+
+
+
 Note conmanv4/conmanv4/conman.go is th executable
 conmanv4/conmanv4.scm is the package recipe
 

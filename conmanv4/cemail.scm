@@ -17,6 +17,7 @@
 	      )
 
 
+(define conman-store-dir "abcdefgh")
 
 (define (fname-from-email email)
   (let* ((at-loc (string-index email #\@))
@@ -73,9 +74,9 @@
 	 (dummy (begin
 		  (put-string p2 txt-composite )
 		  (force-output p2)))
-	 (smtp-command (string-append "./bin/smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to " (assoc-ref item "email") " --bcc info@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline ./scripts/las.png"))
+	 (smtp-command (string-append conman-store-dir "/bin/smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to " (assoc-ref item "email") " --bcc info@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
 	 ;;comment out the next line for testing
-	 (dummy (system smtp-command))
+	;; (dummy (system smtp-command))
 	 )
  
   smtp-command
@@ -98,7 +99,7 @@
 	 (dummy (begin
 		  (put-string p2 txt-composite )
 		  (force-output p2)))
-	 (smtp-command (string-append "./bin/smtp-cli --host mail.labsolns.com:587 --subject 'Summary for batch " (assoc-ref lst "batchid") "' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to info@labsolns.com --body-plain " txt-file-name ))
+	 (smtp-command (string-append conman-store-dir "/bin/smtp-cli --host mail.labsolns.com:587 --subject 'Summary for batch " (assoc-ref lst "batchid") "' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to info@labsolns.com --body-plain " txt-file-name ))
 	 (dummy (system smtp-command))
 	 )
     #f

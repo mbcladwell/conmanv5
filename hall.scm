@@ -2,7 +2,7 @@
   (name "conmanv4")
   (prefix "")
   (version "0.1")
-  (author "mbcladwell")
+  (author "Mortimer Cladwell")
   (copyright (2021))
   (synopsis "")
   (description "")
@@ -10,10 +10,11 @@
   (license gpl3+)
   (dependencies `())
   (files (libraries
-           ((directory
+           ((scheme-file "conmanv4")
+            (directory
               "conmanv4"
-              ((scheme-file "logging")
-              
+              ((compiled-scheme-file "utilities")
+               (compiled-scheme-file "cemail")
                (scheme-file "cemail")
                (scheme-file "utilities")))))
          (tests ((directory "tests" ())))
@@ -23,6 +24,14 @@
             (symlink "README" "README.org")
             (text-file "HACKING")
             (text-file "COPYING")
-            (directory "doc" ((texi-file "conmanv4")))))
+            (directory
+              "doc"
+              ((texi-file "conmanv4")
+               (texi-file "version")
+               (info-file "conmanv4")
+               (text-file ".dirstamp")
+               (text-file "stamp-vti")))
+            (text-file "AUTHORS")
+            (text-file "ChangeLog")))
          (infrastructure
-           ((scheme-file "guix") (scheme-file "hall")  (scheme-file "conmanv4")))))
+           ((scheme-file "guix") (scheme-file "hall")))))
