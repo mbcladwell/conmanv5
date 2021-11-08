@@ -13,8 +13,8 @@
 
 (package
   (name "conmanv4")
-  (version "0.1")
-  (source "./conmanv4-0.1.tar.gz")
+  (version "0.2")
+  (source "./conmanv4-0.2.tar.gz")
   (build-system gnu-build-system)
   (arguments `(#:tests? #false ; there are none
 	       #:phases (modify-phases %standard-phases

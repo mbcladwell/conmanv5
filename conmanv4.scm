@@ -43,6 +43,10 @@
 ;; https://pubmed.ncbi.nlm.nih.gov/"
 ;; scp ~/projects/conman/conman.scm mbc@192.168.1.11:/home/mbc/projects/conman/conman.scm
 
+
+;; When setting up crontab use full path to executables
+;; 45 6 * * * /gnu/store/m5iprcg6pb5ch86r9agmqwd8v6kp7999-guile-3.0.5/bin/guile -L /gnu/store/l01lprwdfn8bf1ql0sdpk40cai26la6n-conmanv4-0.1/share/guile/site/3.0 -e main -s /gnu/store/l01lprwdfn8bf1ql0sdpk40cai26la6n-conmanv4-0.1/share/guile/site/3.0/conmanv4.scm 1 30
+
 ;; 14*60*60*24 = 1209600
 ;; 15*60*60*24 =  1296000
 
@@ -53,7 +57,7 @@
 (define author-find-email-count 0)
 (define batch-id (date->string  (current-date) "~Y~m~d~I~M"))
 (define generic-email-regexp (make-regexp "[A-Za-z0-9.-]*@[-A-Za-z0-9.]+(\\.com|\\.edu|\\.org|\\.net|\\.uk|\\.fr|\\.de|\\.it|\\.ru|\\.in|\\.au|\\.ca|\\.io|\\.py|\\.se|\\.dk|\\.sg|\\.be)" regexp/extended))
-(define days-ago 13) ;; how many days ago to I want to analyze?
+(define days-ago 14) ;; how many days ago to I want to analyze?
 (define duration (time-difference (make-time time-utc  0 (* 86400 days-ago)) (make-time time-utc  0 0)))
 (define two-weeks-ago (date->string  (time-utc->date (subtract-duration (current-time) duration)) "~Y/~m/~d"))
 (define all-chars "-a-zA-Z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜƏƒƠơƯƯǺǻǼǽǾǿńŻć<>~_+=,.:;()&#@®\" ")
