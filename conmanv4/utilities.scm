@@ -1,12 +1,65 @@
 (define-module (conmanv4 utilities)
+  #:use-module (ice-9 regex) ;;list-matches
   #:export (find-occurences-in-string
 	    any-not-false?
 	    to-regular-char
+	    recurse-lst-add-index
+	    first-or-last-auth?
+	    recurse-remove-italicization	    
 	    ))
 
 
-(use-modules  (ice-9 regex) ;;list-matches
-	      )
+(define (first-or-last-auth? auth pmid)
+  ;;is the supplied author first or last in the pmid
+ (let* ((summary-url (string-append "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id="  pmid))
+	(the-body   (receive (response-status response-body)
+			(http-request summary-url) response-body))
+	(dummy (sleep 2))
+	(b (map match:substring  (list-matches "<Item Name=\"Author\" Type=\"String\">[-A-Za-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜƏƒƠơƯƯǺǻǼǽǾǿńŻć ]+</Item>" the-body )))
+	(c (map (lambda (x) (substring x 34 (- (string-length x) 7))) b))
+	(first-auth (car c))
+	(last-auth (list-cdr-ref c (- (length c) 1)))
+	(both-auths (cons first-auth last-auth))
+	(contains (lset-intersection string=? (list auth) both-auths) ))
+   (if (> (length contains) 0) #t #f)))
+
+;; (first-or-last-auth? "Church GM" "32753383")
+;; (first-or-last-auth? "Bhak Y" "32753383")
+;; (first-or-last-auth? "Weber JA" "32753383")
+;; (first-or-last-auth? "Bhak Y" "32381713")
+
+(define (remove-italicization x)  ;;and other strange characters
+  ;;x is a  DocSum
+  (let* ((a (regexp-substitute/global #f "&lt;i&gt;"  x 'pre "" 'post))
+	 (b (regexp-substitute/global #f "&lt;/i&gt;"  a 'pre "" 'post))
+	 (c (regexp-substitute/global #f "&lt"  b 'pre "" 'post))	 
+	 )
+ (regexp-substitute/global #f "&gt;"  c 'pre "" 'post)))
+
+(define (recurse-remove-italicization inlst outlst)
+  ;;inlst is a list of extracted DocSums
+  ;;outlst is the cleaned list
+    (if (null? (cdr inlst))
+      (begin
+	(set! outlst (cons (remove-italicization (car inlst)) outlst))
+	outlst)
+      (begin
+	(set! outlst (cons (remove-italicization (car inlst)) outlst))
+	(recurse-remove-italicization (cdr inlst) outlst))))
+
+
+(define (recurse-lst-add-index counter inlst outlist)
+  ;;take an input list and turn it into an a-list where the index
+  ;;is a number starting at counter and incremented by one
+  (if (null? (cdr inlst))
+      (begin
+	(set! outlist (acons counter (car inlst) outlist))
+	outlist)
+      (begin
+	(set! outlist (acons counter (car inlst)  outlist))
+	(set! counter (+ counter 1))
+	(recurse-lst-add-index counter (cdr inlst) outlist))))
+
 
 (define (find-occurences-in-string query the-string)
   (let*((starts (map match:start (list-matches query the-string  )))

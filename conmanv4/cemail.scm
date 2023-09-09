@@ -1,23 +1,18 @@
-;;#!/usr/bin/guile \
-;;-e main -s
-;;!#
-;; Retrieve rows from mysql and process each row by sending a custom email
-;; (add-to-load-path "/home/mbc/projects")
-
- (define-module (conmanv4 cemail)
+(define-module (conmanv4 cemail)
+  #:use-module (conmanv4 env)
+   #:use-module (ice-9 regex) ;;list-matches
+   #:use-module (ice-9 textual-ports)
+   #:use-module (ice-9 pretty-print)
+  ; #:use-module ()
+  ; #:use-module ()
    #:export (send-report
 	     send-custom-email
+	     recurse-send-email
  	    ))
 
-(use-modules  (ice-9 regex) ;;list-matches
-	      (ice-9 textual-ports)
-	      (ice-9 pretty-print)
-	   
-	      (srfi srfi-19) ;; date-time
-	      )
 
+(define emails-sent '())  ;;if an email is sent, cons it to this list
 
-(define conman-store-dir "abcdefgh")
 
 (define (fname-from-email email)
   (let* ((at-loc (string-index email #\@))
@@ -25,6 +20,38 @@
 	 (b (string-index a #\.))
 	 (c (if b (string-capitalize! (substring a 0 b))  #f)))
     c))
+
+(define (send-email a-contact)
+  ;;the ref records have journal and title info, search with pmid
+  ;;input to cemail is an alist:
+  ;; (("email" . "Leen.Delang@kuleuven.be")
+  ;;  ("journal" . "Microorganisms")
+  ;;  ("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")
+  ;;  ("firstn" . "Rana"))
+      (let* (
+	    (email (contact-email a-contact))
+	    (firstn (contact-firstn a-contact) )
+	    (pmid (contact-pmid a-contact))
+	    (ref (assoc pmid ref-records))
+	    (title (reference-title (cdr ref)))
+	    (journal (reference-journal (cdr ref)))
+	    (the-list (list (cons "email" email) (cons "journal" journal)(cons "title" title)(cons "firstn" firstn)))
+	    (for-report (list (cons "firstn" firstn)(cons "email" email)))
+	    (dummy (if (equal? email "null") #f
+		       (begin
+			 (send-custom-email the-list)
+			 (set! emails-sent (cons for-report emails-sent))))))
+	#f))
+
+
+(define (recurse-send-email lst)
+  ;;lst is the list of contact records
+  ;;recurse over the contacts list and send an email if email is not null
+  (if (null? (cdr lst))
+      (send-email (car lst))
+      (begin
+	(send-email (car lst))
+	(recurse-send-email (cdr lst)))))
 
 
 (define (get-rand-file-name pre suff)
@@ -105,3 +132,4 @@
     #f
   
   ))
+
