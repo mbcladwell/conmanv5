@@ -1,5 +1,11 @@
 (define-module (conmanv4 utilities)
   #:use-module (ice-9 regex) ;;list-matches
+ #:use-module (ice-9 receive)	     
+ #:use-module (web response)
+ #:use-module (web request)
+ #:use-module (web uri)
+ #:use-module (web client)
+ #:use-module (srfi srfi-1) 
   #:export (find-occurences-in-string
 	    any-not-false?
 	    to-regular-char

@@ -1,19 +1,17 @@
 (define-module (conmanv4 munger)
   #:use-module (conmanv4 env)
   #:use-module (conmanv4 recs)
+  #:use-module (conmanv4 utilities)
   #:use-module (ice-9 regex) ;;list-matches
- #:use-module  (srfi srfi-19)   ;; date time
+ #:use-module (ice-9 receive)	     
 
-  #:export (
-	   
+  #:export (generic-email-regexp
+	    get-authors-records
+	    get-affils-alist
 	    ))
 
 ;;these functions perform the screen scraping of PubMed articles
 
-(define article-count 0)
-(define author-count 0)
-(define author-find-email-count 0)
-(define batch-id (date->string  (current-date) "~Y~m~d~I~M"))
 (define generic-email-regexp (make-regexp "[A-Za-z0-9.-]*@[-A-Za-z0-9.]+(\\.com|\\.edu|\\.org|\\.net|\\.uk|\\.fr|\\.de|\\.it|\\.ru|\\.in|\\.au|\\.ca|\\.io|\\.py|\\.se|\\.dk|\\.sg|\\.be)" regexp/extended))
 
 (define (get-coords lst)
@@ -166,36 +164,4 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;working on this
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define (recurse-get-unique-emails contacts unique-emails)
-;;   ;; input contacts records
-;;   ;; output is a list of unique emails
-;;   (if (null? (cdr contacts))
-;;       (begin
-;;       (cons (contact-email (car contacts)) unique-emails )
-;;       (delete-duplicates! unique-emails)
-;;       )
-;;       (recurse-get-unique-email (cdr contacts)
-;; 				(cons (contact-email (car contacts)) unique-emails ))))
-
-
-;; (define (scan-records-for-email contacts email matching-contact)
-
-
-
-;;   )
-
-;; (define (get-unique-email-contacts contacts unique-email-contacts-out)
-;;   (let* ((unique-emails (recurse-get-unique-emails contacts '())
-	 
-;; 	 )
-
-;;     ))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

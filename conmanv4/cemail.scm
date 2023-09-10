@@ -3,11 +3,12 @@
    #:use-module (ice-9 regex) ;;list-matches
    #:use-module (ice-9 textual-ports)
    #:use-module (ice-9 pretty-print)
-  ; #:use-module ()
+   #:use-module (conmanv4 recs)
   ; #:use-module ()
    #:export (send-report
 	     send-custom-email
 	     recurse-send-email
+	     emails-sent
  	    ))
 
 

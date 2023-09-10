@@ -3,11 +3,23 @@
   #:use-module  (srfi srfi-9)  ;;records
   #:export (make-ref-records
 	    ref-records
+	    make-reference
+	    reference-title
+	    reference-journal
 	    recurse-update-contact-records
 	    make-contact
+	    contact-firstn
+	    contact-pmid
+	    
+	    contact-email
+	    contact-affil
+	    contact-qname
+	    set-contact-email!
+	     
 	    ))
 
 (define ref-records '())  ;;this will hold pmid, title, journal as records; key is pmid
+
 
 (define-record-type <reference>
   (make-reference pmid journal title)
@@ -67,4 +79,3 @@
     (let* ((a (update-contact-records counter  pmid auth-list (car authors) affils auth-out))
 	   (counter (+ counter 1)))
       (recurse-update-contact-records counter pmid auth-list (cdr authors) affils a))))
-
