@@ -7,7 +7,7 @@
 	    conman-store-dir
 	    ))
 
-(define conman-store-dir "abcdefgh") ;;this will be modified upon install
+(define conman-store-dir "conmanstorepath") ;;this will be modified upon install
 
 (define days-ago 17) ;; how many days ago to I want to analyze?
 ;; 14*60*60*24 = 1209600
