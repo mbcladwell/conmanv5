@@ -1,15 +1,15 @@
-(use-modules
-  (guix packages)
-  ((guix licenses) #:prefix license:)
-  (guix download)
-  (guix build-system gnu)
-  (gnu packages)
-  (gnu packages autotools)
-  (gnu packages guile)
-  (gnu packages guile-xyz)
-  (gnu packages pkg-config)
-  (gnu packages texinfo)
-  (gnutls))
+(define-module (conmanv4)
+   #:use-module (guix packages)
+   #:use-module ((guix licenses) #:prefix license:)
+   #:use-module (guix download)
+   #:use-module (guix build-system gnu)
+   #:use-module (gnu packages)
+   #:use-module (gnu packages autotools)
+   #:use-module (gnu packages guile)
+   #:use-module (gnu packages guile-xyz)
+   #:use-module (gnu packages pkg-config)
+   #:use-module (gnu packages texinfo)
+   #:use-module (gnutls))
 
 (define-public conmanv4
   (let ((commit "75e26a7ee861ab4da004a7591b0c483c03efbed9")
@@ -34,7 +34,7 @@
 						      (substitute* '("conmanv4/env.scm")
 								   (("ebbotstorepath")
 								    out))
-						      (substitute* '("scripts/ebbot.sh" "scripts/format.sh" "scripts/init-acct.sh")
+						      (substitute* '("scripts/conman.sh")
 								   (("guileloadpath")
 								    (string-append  out "/share/guile/site/3.0:"
 										    (assoc-ref inputs "guile")  "/share/guile/site/3.0:"
@@ -91,5 +91,5 @@
   (synopsis "")
   (description "")
   (home-page "www.labsolns.com")
-  (license license:gpl3+))
+  (license license:gpl3+))))
 
