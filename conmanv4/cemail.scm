@@ -102,7 +102,8 @@
 	 (dummy (begin
 		  (put-string p2 txt-composite )
 		  (force-output p2)))
-	 (smtp-command (string-append conman-store-dir "/bin/smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to " (assoc-ref item "email") " --bcc info@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
+	 ;; (smtp-command (string-append conman-store-dir "/bin/smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to " (assoc-ref item "email") " --bcc info@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
+	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to " (assoc-ref item "email") " --bcc info@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
 	 ;;comment out the next line for testing
 	 (dummy (system smtp-command))
 	 )
