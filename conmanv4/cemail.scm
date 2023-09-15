@@ -128,7 +128,7 @@
 	 (dummy (begin
 		  (put-string p2 txt-composite )
 		  (force-output p2)))
-	 (smtp-command (string-append conman-store-dir "/bin/smtp-cli --host mail.labsolns.com:587 --subject 'Summary for batch " (assoc-ref lst "batchid") "' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to info@labsolns.com --body-plain " txt-file-name ))
+	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Summary for batch " (assoc-ref lst "batchid") "' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to info@labsolns.com --body-plain " txt-file-name ))
 	 (dummy (system smtp-command))
 	 )
     #f
