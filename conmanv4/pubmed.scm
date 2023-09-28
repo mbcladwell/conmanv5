@@ -93,6 +93,8 @@
 
 (define (get-summaries reldate retmax)
   ;; this is the initializing method
+  ;; calls get-id-authors which provides the return value -- the list (("37658855")  ("Jirangkul P"   "Lorsuwannarat N"   "Wanichjaroen N"))
+  ;; calls get-pmid-jrn-title to make ref records as side effect
   (let*((db "pubmed")
 ;;	(query (string-append "96+multi+well+OR+high-throughput+screening+assay+(" (uri-encode two-weeks-ago) "[epdat])"))
 	(query (string-append "(((96+well+plate)+OR+(high+throughput+screening))+OR+(multi+well+plate+assay))+AND+((\"" (uri-encode two-weeks-ago) "\"[Date+-+Entry]+%3A+\"" (uri-encode two-weeks-ago) "\"[Date+-+Entry]))"))
@@ -117,7 +119,7 @@
 		      (d (recurse-remove-italicization c '()))
 		      ;; this is where I will insert the ref table processing
 		      ;; this creates ref-records, an a-list of references
-		      (dummy (get-pmid-jrn-title d))
+		      (dummy (get-pmid-jrn-title d)) ;;makes the ref-records as a side effect
 		      ) 
 		 (map get-id-authors d)
 		 )		      
@@ -146,7 +148,10 @@
 	 (affils-alist '())
 	 (affils-alist (if (null? author-records) #f (get-affils-alist the-body )))
 	 (author-records2 (if (null? affils-alist) #f (recurse-update-contact-records 1 pmid indexed-auth-lst author-records affils-alist '())))
+	 
+;;	 (author-records2 (if  affils-alist (recurse-update-contact-records 1 pmid indexed-auth-lst author-records affils-alist '()) #f ))
 	 (author-records3 (if (null? author-records2) #f (recurse-get-missing-email author-records2 '())))
+;;	 (author-records3 (if  author-records2 (recurse-get-missing-email author-records2 '()) #f))
 	 (unique-emails (recurse-get-unique-emails author-records3 '()))
 	 (author-records4 (get-unique-email-contacts author-records3 unique-emails '()))
 	 ;;comment next line for testing and pretty print
@@ -341,6 +346,7 @@
 
 (define (get-id-authors x)
   ;;used in get-summaries
+  ;;provides the construct (("37658855")  ("Jirangkul P"   "Lorsuwannarat N"   "Wanichjaroen N"))
   (let* ((a (map match:substring  (list-matches "<Item Name=\"Author\" Type=\"String\">[-a-zA-Z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜƏƒƠơƯƯǺǻǼǽǾǿńŻć<>~_+=,.:;()&#@\" ]+</Item>" x )))
 	 (b (map (lambda (x) (substring x 34 (- (string-length x) 7)) ) a))
 	 (c (string-match "<Id>[0-9]{8}</Id>" x))

@@ -68,6 +68,8 @@
 
 
 (define (find-occurences-in-string query the-string)
+  ;; (find-occurences-in-string "<DocSum>" "<DocSum>jsdhfjhsud<DocSum>sdfklskdf<DocSum>dd")) ==>
+  ;; ((4 . 17) (22 . 34) (39 . 45))
   (let*((starts (map match:start (list-matches query the-string  )))
 	(start-offset (map (lambda (x) (+ x 4)) starts))
 	(end-offset-pre (map (lambda (x) (- x 1)) starts))

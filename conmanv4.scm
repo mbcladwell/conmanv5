@@ -12,6 +12,7 @@
 )
 
 
+
 (define (main args)
   ;; args: '( "script name" "past days to query" "Number of articles to pull")
   (let* ((start-time (current-time time-monotonic))
@@ -29,3 +30,17 @@
     ))
    
 
+;;WORKFLOW
+
+;;1 pubmed/get-summaries returns a list of (("37658855")  ("Jirangkul P"   "Lorsuwannarat N"   "Wanichjaroen N")) and
+;;  also as side effect makes ref-records
+
+;;2 retrieve-article
+;;     -get the article from "https://pubmed.ncbi.nlm.nih.gov/" pmid "/"
+;;     - fast: munger/get-author-records extracts authors from article; also extracts affiliations
+;;
+;;
+;;
+;;
+;;
+;;

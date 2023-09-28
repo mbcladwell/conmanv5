@@ -17,10 +17,11 @@
 (define (get-coords lst)
   ;;expecting a 4 element list
   ;;used in extract-authors
-  (let* ((a (if (car lst) (list (+ (match:start (car lst)) 1)(- (match:end (car lst)) 39)) #f))
-	 (b (if (cadr lst) (list (+ (match:start (cadr lst)) 1)(- (match:end (cadr lst)) 39)) #f))
+  ;;pull out the full name and extract first and last and other as needed
+  (let* ((a (if (car lst) (list (+ (match:start (car lst)) 1)(- (match:end (car lst)) 39)) #f)) ;;equal-contrib-container
+	 (b (if (cadr lst) (list (+ (match:start (cadr lst)) 1)(- (match:end (cadr lst)) 39)) #f)) ;;affiliation-links
 	 (c (if (caddr lst) (list (+ (match:start (caddr lst)) 1)(- (match:end (caddr lst)) 11)) #f))
-	 (d (if (cadddr lst) (list (+ (match:start (cadddr lst)) 1)(- (match:end (cadddr lst)) 0)) #f))
+	 (d (if (cadddr lst) (list (+ (match:start (cadddr lst)) 1)(- (match:end (cadddr lst)) 24)) #f))
 	 )
     (if a a (if b b (if c c (if d d #f))))))
 
@@ -32,8 +33,8 @@
 		   (list (string-match (string-append ">[" all-chars "]+</a><sup class=\"equal-contrib-container")  achunk)			  
 		      (string-match (string-append ">[" all-chars "]+</a><sup class=\"affiliation-links\"><spa")  achunk)
 		      (string-match (string-append ">[" all-chars "]+</a></span>")  achunk)
-		      (string-match (string-append "</a><span class=\"comma\">") achunk )			
-			)))	
+		      (string-match (string-append ">[" all-chars "]+</a><span class=\"comma\">") achunk )			
+		      )))
 	  (full-name (xsubstring achunk (car coords) (cadr coords)))
 	   (name-num-sp (string-count full-name #\sp))
 	   (first-sp (string-contains full-name " "))

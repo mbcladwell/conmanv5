@@ -60,7 +60,8 @@
   ;;fill missing fields pmid, index, qname using the passed in, indexed auth-list
       (let* (
 	     (affil-id (contact-affil the-contact)) ;;what I need
-	     (affil-list (if affil-id (assoc affil-id affils) #f))
+;;	     (affil-list (if affil-id (assoc affil-id affils) #f))
+	     (affil-list (if (and affil-id affils) (assoc affil-id affils) #f))
 	     (affil (if  affil-list (cadr affil-list) "null"))
 	     (email (if  affil-list (caddr affil-list) "null"))
 	     (dummy (if  affil (set-contact-affil! the-contact affil) #f))
