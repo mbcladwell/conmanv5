@@ -8,6 +8,7 @@
   #:export (generic-email-regexp
 	    get-authors-records
 	    get-affils-alist
+	    extract-authors ;;remove later
 	    ))
 
 ;;these functions perform the screen scraping of PubMed articles
@@ -79,6 +80,7 @@
   ;; pulls out a single author
   (make-regexp "data-ga-label=[a-zA-Z0-9~_+=,.:;'()//&#@<>/\" -]+</a></sup><span" regexp/extended))
 
+
 (define (get-authors-records the-body)
   (let*(
 	(coord-start (string-match "<div class=\"authors-list\">" the-body ))
@@ -94,7 +96,10 @@
 			   (auth-lst (map (lambda (x) (substring auth-chunk (car x) (cdr x))) b))
 			   (first-author (car auth-lst))
 			   (proceed-flag (or (string-contains first-author "</a><sup class=\"equal-contrib-container")
-					     (string-contains first-author "</a><sup class=\"affiliation-links\"><spa"))))
+					     (string-contains first-author "</a><sup class=\"affiliation-links\"><spa")
+					      (string-contains first-author "</a></span>")
+					      (string-contains first-author "</a><span class=\"comma\">")
+					     )))
 		      (if proceed-flag (map extract-authors auth-lst) #f))
 		    #f )
 		)
