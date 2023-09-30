@@ -273,6 +273,7 @@
   ;;input: contact records with all info but maybe email is missing
   ;;if email is missing find it
   ;;I will also count contacts in this method
+  ;;this takes a lot of time
       (let* (
 	     (email (contact-email the-contact))
 	     (email-null?   (string=? "null" email))
