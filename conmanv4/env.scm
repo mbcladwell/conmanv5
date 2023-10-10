@@ -11,11 +11,11 @@
 
 (define conman-store-dir "conmanstorepath") ;;this will be modified upon install
 
-(define days-ago 14) ;; how many days ago to I want to analyze?
+(define days-ago "14") ;; how many days ago to I want to analyze?
 ;; 14*60*60*24 = 1209600
 ;; 15*60*60*24 =  1296000
 
-(define max-arts 30) ;;maximum number of articles to pull
+(define max-arts "30") ;;maximum number of articles to pull
 
 (define duration (time-difference (make-time time-utc  0 (* 86400 days-ago)) (make-time time-utc  0 0)))
 (define two-weeks-ago (date->string  (time-utc->date (subtract-duration (current-time) duration)) "~Y/~m/~d"))
