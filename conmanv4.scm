@@ -13,7 +13,7 @@
 
 
 
-(define (main)
+(define (main args)
   ;; args: '( "script name" "past days to query" "Number of articles to pull")
   ;; 2023-10-01 revision requires single arg that is not used
   (let* ((start-time (current-time time-monotonic))
