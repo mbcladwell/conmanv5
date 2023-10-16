@@ -371,7 +371,7 @@
 			   (receive (response-status response-body)
 			       (http-request url) response-body))
 			 (lambda (key . args)
-			   #f)))
+			   (search-fl-for-auth2 auth (cdr pmid-list)))))
 	     (dummy (sleep 2))
 	     (coord-start (string-match "<div class=\"affiliations\">" the-body ))
 	     (coord-end (string-match " <ul class=\"identifiers\" id=\"full-view-identifiers\">" the-body ))
