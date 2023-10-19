@@ -366,13 +366,24 @@
       (let* ((url (string-append "https://pubmed.ncbi.nlm.nih.gov/" (car pmid-list) "/"))
 	     ;; (the-body (receive (response-status response-body)
 	     ;; 		   (http-request url) response-body))
-	     (the-body (catch 'system-error
-			 (lambda ()
-			   (receive (response-status response-body)
-			       (http-request url) response-body))
-			 (lambda (key . args)
-			   (search-fl-for-auth2 auth (cdr pmid-list)))))
-	     (dummy (sleep 2))
+	     
+	     ;; (the-body (catch 'system-error
+	     ;; 		 (lambda ()
+	     ;; 		   (receive (response-status response-body)
+	     ;; 		       (http-request url) response-body))
+	     ;; 		 (lambda (key . args)
+	     ;; 		   (search-fl-for-auth2 auth (cdr pmid-list)))))
+
+	     (the-body  (with-exception-handler
+			    (lambda (ex)
+			      (pretty-print "exception in search-fl-for-auth:")
+			      (pretty-print ex)
+			      (search-fl-for-auth2 auth (cdr pmid-list)))
+			  (lambda ()
+			    (receive (response-status response-body)
+				(http-request url) response-body))
+			  #:unwind? #t))
+	     (_ (sleep 2))
 	     (coord-start (string-match "<div class=\"affiliations\">" the-body ))
 	     (coord-end (string-match " <ul class=\"identifiers\" id=\"full-view-identifiers\">" the-body ))
 	     (affil-chunk (if coord-start (xsubstring the-body (match:start coord-start) (match:start coord-end)) #f))
