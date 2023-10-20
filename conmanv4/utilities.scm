@@ -20,6 +20,18 @@
  (let* ((summary-url (string-append "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id="  pmid))
 	(the-body   (receive (response-status response-body)
 			(http-request summary-url) response-body))
+
+	  (the-body  (with-exception-handler
+			    (lambda (ex)
+			      (pretty-print "exception in first-or-last-auth:")
+			      (pretty-print ex))
+			    ;;  (search-fl-for-auth2 auth (cdr pmid-list)))
+			  (lambda ()
+			    (receive (response-status response-body)
+				(http-request summary-url) response-body))
+			  #:unwind? #t))
+
+
 	(dummy (sleep 2))
 	(b (map match:substring  (list-matches "<Item Name=\"Author\" Type=\"String\">[-A-Za-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜƏƒƠơƯƯǺǻǼǽǾǿńŻć ]+</Item>" the-body )))
 	(c (map (lambda (x) (substring x 34 (- (string-length x) 7))) b))

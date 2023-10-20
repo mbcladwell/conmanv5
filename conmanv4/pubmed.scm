@@ -364,16 +364,6 @@
   ;; process the list until you find an email
  (if (null? pmid-list) #f
       (let* ((url (string-append "https://pubmed.ncbi.nlm.nih.gov/" (car pmid-list) "/"))
-	     ;; (the-body (receive (response-status response-body)
-	     ;; 		   (http-request url) response-body))
-	     
-	     ;; (the-body (catch 'system-error
-	     ;; 		 (lambda ()
-	     ;; 		   (receive (response-status response-body)
-	     ;; 		       (http-request url) response-body))
-	     ;; 		 (lambda (key . args)
-	     ;; 		   (search-fl-for-auth2 auth (cdr pmid-list)))))
-
 	     (the-body  (with-exception-handler
 			    (lambda (ex)
 			      (pretty-print "exception in search-fl-for-auth:")
