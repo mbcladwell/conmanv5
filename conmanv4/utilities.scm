@@ -5,6 +5,7 @@
  #:use-module (web request)
  #:use-module (web uri)
  #:use-module (web client)
+ #:use-module (ice-9 pretty-print)
  #:use-module (srfi srfi-1) 
   #:export (find-occurences-in-string
 	    any-not-false?

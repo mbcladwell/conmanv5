@@ -14,6 +14,7 @@
  #:use-module (ice-9 string-fun)  ;;string-replace-substring
  #:use-module (srfi srfi-1)  ;;list searching; delete-duplicates in list 
  #:use-module  (srfi srfi-19)   ;; date time
+   #:use-module (ice-9 pretty-print)
  
   #:export (recurse-get-missing-email
 	    retrieve-article
@@ -368,7 +369,7 @@
 			    (lambda (ex)
 			      (pretty-print "exception in search-fl-for-auth:")
 			      (pretty-print ex)
-			      (search-fl-for-auth2 auth (cdr pmid-list)))
+			      (search-fl-for-auth auth (cdr pmid-list)))
 			  (lambda ()
 			    (receive (response-status response-body)
 				(http-request url) response-body))
