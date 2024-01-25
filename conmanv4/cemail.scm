@@ -81,7 +81,7 @@
 	 (str2 ",<br><br>\nYour recent article entitled \"")
 	 (str3 "\" in the journal <i>")
 	 (str4 "</i> suggests you might benefit from our product.<br>\nVisit <a href=\"http://www.labsolns.com\">Laboratory Automation Solutions</a> and learn how LIMS*Nucleus can help you.<br><br>\nLIMS*Nucleus can:<br><br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Associate assay data with plate sets<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Identify hits scoring in assays using included algorithms - or write your own<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Export annotated data<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Generate worklists for liquid handling robots<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Rearray hits into a smaller collection of plates<br>\n
-&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Track samples<br><br>\nLIMS*Nucleus can serve as the core of a LIMS system.<br>\nPrototype algorithms, dashboards, visualizations with R/Shiny.<br>\nDownload a free copy or evaluate an online running instance by visiting <a href=\"http://labsolns.com/software/evaluate/\">labsolns.com</a><br><br>\nThanks<br><br><a href=\"mailto:info@labsolns.com\">info@labsolns.com</a><br><br>\n<img src=\"cid:las.png\" style=\"width: 175px; height: 62px;\">\n</body></html>")
+&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Track samples<br><br>\nLIMS*Nucleus can serve as the core of a LIMS system.<br>\nPrototype algorithms, dashboards, visualizations with R/Shiny.<br>\nDownload a free copy or evaluate an online running instance by visiting <a href=\"http://labsolns.com/software/evaluate/\">labsolns.com</a><br><br>\nThanks<br><br><a href=\"mailto:mbc2024@labsolns.com\">mbc2024@labsolns.com</a><br><br>\n<img src=\"cid:las.png\" style=\"width: 175px; height: 62px;\">\n</body></html>")
 	 (email (assoc-ref item "email"))
 	 (first-name (if (fname-from-email email) (fname-from-email email)(assoc-ref item "firstn")))
 	 (html-composite (string-append str1 first-name  str2 (assoc-ref item "title") str3 (assoc-ref item "journal") str4 ))
@@ -95,7 +95,7 @@
 	 (str5 "Dear ")
 	 (str6 ",\nYour recent article entitled \"")	 
 	 (str7 "\" in the journal ")
-	 (str8 " suggests you might benefit from our product.\nVisit Laboratory Automation Solutions at www.labsolns.com and learn how LIMS*Nucleus can help you.\n\nLIMS*Nucleus can:\n\n-Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate\n-Associate assay data with plate sets\n-Identify hits scoring in assays using included algorithms - or write your own\n-Export annotated data\n-Generate worklists for liquid handling robots\n-Rearray hits into a smaller collection of plates\n-Track samples\n\nLIMS*Nucleus can serve as the core of a LIMS system.\nPrototype algorithms, dashboards, visualizations with R/Shiny.\nDownload a free copy or evaluate an online running instance by visiting www.labsolns.com/software/evaluate/\n\nFor more information contact info@labsolns.com\n\nThank You!")
+	 (str8 " suggests you might benefit from our product.\nVisit Laboratory Automation Solutions at www.labsolns.com and learn how LIMS*Nucleus can help you.\n\nLIMS*Nucleus can:\n\n-Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate\n-Associate assay data with plate sets\n-Identify hits scoring in assays using included algorithms - or write your own\n-Export annotated data\n-Generate worklists for liquid handling robots\n-Rearray hits into a smaller collection of plates\n-Track samples\n\nLIMS*Nucleus can serve as the core of a LIMS system.\nPrototype algorithms, dashboards, visualizations with R/Shiny.\nDownload a free copy or evaluate an online running instance by visiting www.labsolns.com/software/evaluate/\n\nFor more information contact mbcladwell@labsolns.com\n\nThank You!\n\nMortimer Cladwell")
 	 (txt-composite (string-append str5 first-name str6 (assoc-ref item "title") str7 (assoc-ref item "journal") str8 ))
 	 (txt-file-name (get-rand-file-name "rnd" "txt"))
 	 (p2  (open-output-file txt-file-name))
@@ -103,7 +103,7 @@
 		  (put-string p2 txt-composite )
 		  (force-output p2)))
 	 ;; (smtp-command (string-append conman-store-dir "/bin/smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to " (assoc-ref item "email") " --bcc info@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
-	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to " (assoc-ref item "email") " --bcc info@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
+	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user mbc2024@labsolns.com --password 7]Dg8E_zTPEU6M) --from mbc2024@labsolns.com --to " (assoc-ref item "email") " --bcc mbc2024@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
 	 ;;comment out the next line for testing
 	 (dummy (system smtp-command))
 	 )
@@ -128,7 +128,7 @@
 	 (dummy (begin
 		  (put-string p2 txt-composite )
 		  (force-output p2)))
-	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Summary for batch " (assoc-ref lst "batchid") "' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to info@labsolns.com --body-plain " txt-file-name ))
+	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Summary for batch " (assoc-ref lst "batchid") "' --enable-auth --user mbc2024@labsolns.com --password 7]Dg8E_zTPEU6M) --from mbc2024@labsolns.com --to mbc2024@labsolns.com --body-plain " txt-file-name ))
 	 (dummy (system smtp-command))
 	 )
     #f
