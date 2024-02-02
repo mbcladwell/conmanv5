@@ -20,6 +20,7 @@
 	    retrieve-article
 	    get-summaries
 	    get-stats-list
+	    send-report
 	    ))
 
 (define article-count 0)
@@ -87,8 +88,9 @@
 	 (e  (map list-matches  (circular-list search-term) x ))
 	 (f (process-vec-journal e '()))  ;;Journals
 	 )
-;;    (pretty-print f)))
-    (make-ref-records b f d )))
+    ;;    (pretty-print f)))
+      (make-ref-records b f d )
+    ))
 
 
 
@@ -158,7 +160,6 @@
 	 ;;comment next line for testing and pretty print
 	 (dummy4 (if (null? author-records4) #f (recurse-send-email author-records4) ))
 	 )     
-   ;; (pretty-print author-records)
     #f
     ))
 
@@ -421,7 +422,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; reports end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 
 

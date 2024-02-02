@@ -1,8 +1,10 @@
 (define-module (conmanv4 recs)
   #:use-module (ice-9 regex) ;;list-matches
   #:use-module  (srfi srfi-9)  ;;records
+   #:use-module (ice-9 pretty-print)
   #:export (make-ref-records
 	    ref-records
+	    get-ref-records
 	    make-reference
 	    reference-title
 	    reference-journal
@@ -15,11 +17,12 @@
 	    contact-affil
 	    contact-qname
 	    set-contact-email!
-	     
+
 	    ))
 
 (define ref-records '())  ;;this will hold pmid, title, journal as records; key is pmid
 
+(define (get-ref-records) (display ref-records))
 
 (define-record-type <reference>
   (make-reference pmid journal title)
@@ -36,6 +39,8 @@
   (if (null? (cdr pmid))
       (begin
 	(set! ref-records (acons  (car pmid) (make-reference (car pmid) (car journal) (car title)) ref-records))
+;;	(pretty-print (string-append "in first level of make-ref-records: "))
+;;	(display ref-records)
 	ref-records)
       (begin
 	(set! ref-records (acons (car pmid) (make-reference (car pmid) (car journal) (car title)) ref-records))
@@ -80,3 +85,4 @@
     (let* ((a (update-contact-records counter  pmid auth-list (car authors) affils auth-out))
 	   (counter (+ counter 1)))
       (recurse-update-contact-records counter pmid auth-list (cdr authors) affils a))))
+

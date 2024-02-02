@@ -12,6 +12,8 @@
  	    ))
 
 
+(define emailer "mbc2024@labsolns.com")
+(define password "7]Dg8E_zTPEU6M)")
 (define emails-sent '())  ;;if an email is sent, cons it to this list
 
 
@@ -29,20 +31,21 @@
   ;;  ("journal" . "Microorganisms")
   ;;  ("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")
   ;;  ("firstn" . "Rana"))
-      (let* (
-	    (email (contact-email a-contact))
-	    (firstn (contact-firstn a-contact) )
-	    (pmid (contact-pmid a-contact))
-	    (ref (assoc pmid ref-records))
-	    (title (reference-title (cdr ref)))
-	    (journal (reference-journal (cdr ref)))
-	    (the-list (list (cons "email" email) (cons "journal" journal)(cons "title" title)(cons "firstn" firstn)))
-	    (for-report (list (cons "firstn" firstn)(cons "email" email)))
-	    (dummy (if (equal? email "null") #f
-		       (begin
-			 (send-custom-email the-list)
-			 (set! emails-sent (cons for-report emails-sent))))))
-	#f))
+  (let* (
+	 (email (contact-email a-contact))
+	 (firstn (contact-firstn a-contact) )
+	 (pmid (contact-pmid a-contact))
+	 (ref (assoc pmid ref-records))
+	 (title (reference-title (cdr ref)))
+	 (journal (reference-journal (cdr ref)))
+	 (the-list (list (cons "email" email) (cons "journal" journal)(cons "title" title)(cons "firstn" firstn)))
+	 (for-report (list (cons "firstn" firstn)(cons "email" email)))
+	 (_ (display (string-append for-report "\n")))
+	 (dummy (if (equal? email "null") #f
+		    (begin
+		      ;; (send-custom-email the-list)
+		      (set! emails-sent (cons for-report emails-sent))))))
+    #f))
 
 
 (define (recurse-send-email lst)
@@ -103,7 +106,7 @@
 		  (put-string p2 txt-composite )
 		  (force-output p2)))
 	 ;; (smtp-command (string-append conman-store-dir "/bin/smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to " (assoc-ref item "email") " --bcc info@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
-	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user mbc2024@labsolns.com --password 7]Dg8E_zTPEU6M) --from mbc2024@labsolns.com --to " (assoc-ref item "email") " --bcc mbc2024@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
+	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user " emailer " --password " password " --from " emailer " --to " (assoc-ref item "email") " --bcc " emailer " --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
 	 ;;comment out the next line for testing
 	 (dummy (system smtp-command))
 	 )
@@ -128,7 +131,7 @@
 	 (dummy (begin
 		  (put-string p2 txt-composite )
 		  (force-output p2)))
-	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Summary for batch " (assoc-ref lst "batchid") "' --enable-auth --user mbc2024@labsolns.com --password 7]Dg8E_zTPEU6M) --from mbc2024@labsolns.com --to mbc2024@labsolns.com --body-plain " txt-file-name ))
+	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Summary for batch " (assoc-ref lst "batchid") "' --enable-auth --user " emailer " --password " password " --from " emailer " --to " emailer " --body-plain " txt-file-name ))
 	 (dummy (system smtp-command))
 	 )
     #f

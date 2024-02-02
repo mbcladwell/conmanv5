@@ -1,16 +1,24 @@
 (define-module (conmanv4)
 #:use-module (conmanv4 env)  
 #:use-module (conmanv4 utilities)
-#:use-module (conmanv4 cemail)
 #:use-module (conmanv4 recs)
 #:use-module (conmanv4 munger)
 #:use-module (conmanv4 pubmed)
+#:use-module (conmanv4 cemail)
 #:use-module (srfi srfi-19)   ;; date time
 #:use-module (srfi srfi-1)  ;;list searching; delete-duplicates in list 
 #:use-module (ice-9 pretty-print)
 #:export (main)
 )
 
+;;#! /bin/bash
+
+;;source /home/admin/.guix-profile/etc/profile
+;;export PATH=/home/admin/conmanv4/bin:${PATH:+:}$PATH
+;;export GUILE_LOAD_PATH=/gnu/store/5yvzilh78996627i8avq532sl2c03i95-gnutls-3.6.15/share/guile/site/3.0:/home/admin/conmanv4:${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH
+;;/gnu/store/m5iprcg6pb5ch86r9agmqwd8v6kp7999-guile-3.0.5/bin/guile -e '(conmanv4)' -s /home/admin/conmanv4/conmanv4.scm blah
+
+;;2024-01-30 use guile -e '(conmanv4)' -L . -s ./conmanv4.scm blah from project directory
 
 
 (define (main args)
