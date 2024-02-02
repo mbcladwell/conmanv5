@@ -20,7 +20,6 @@
 	    retrieve-article
 	    get-summaries
 	    get-stats-list
-	    send-report
 	    ))
 
 (define article-count 0)
