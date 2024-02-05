@@ -13,7 +13,7 @@
 
 
 (define emailer "mbc2024@labsolns.com")
-(define password "7]Dg8E_zTPEU6M)")
+(define password "7]Dg8E_zTPEU6M")
 (define emails-sent '())  ;;if an email is sent, cons it to this list
 
 
