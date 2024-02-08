@@ -9,9 +9,11 @@
 	    max-arts
 	    ))
 
-(define conman-store-dir "conmanstorepath") ;;this will be modified upon install
+;;(define conman-store-dir "conmanstorepath") ;;this will be modified upon install
+(define conman-store-dir "/home/admin/conmanv4") ;;this will be modified upon install
 
-(define days-ago 14) ;; how many days ago to I want to analyze?
+
+(define days-ago 15) ;; how many days ago to I want to analyze?
 ;; 14*60*60*24 = 1209600
 ;; 15*60*60*24 =  1296000
 
