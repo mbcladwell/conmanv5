@@ -42,7 +42,7 @@
 	 (for-report (list (cons "firstn" firstn)(cons "email" email)))
 	 (dummy (if (equal? email "null") #f
 		    (begin
-		      ;; (send-custom-email the-list)
+		      (send-custom-email the-list)
 		      (set! emails-sent (cons for-report emails-sent))))))
     #f))
 
