@@ -159,7 +159,8 @@
 	 ;;comment next line for testing and pretty print
 	 (dummy4 (if (null? author-records4) #f (recurse-send-email author-records4) ))
 	 )     
-    #f
+   ;; #f
+    (pretty-print author-records4)
     ))
 
 
