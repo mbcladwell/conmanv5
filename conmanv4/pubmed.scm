@@ -6,7 +6,7 @@
  #:use-module (web uri)
  #:use-module (web client)
  #:use-module (ice-9 receive)	     
- #:use-module (rnutls)	     
+ #:use-module (gnutls)	     
  #:use-module (conmanv4 recs)	     
  #:use-module (conmanv4 utilities)	     
  #:use-module (conmanv4 munger)
