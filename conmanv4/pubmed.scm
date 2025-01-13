@@ -158,10 +158,10 @@
 	 (unique-emails (recurse-get-unique-emails author-records3 '()))
 	 (author-records4 (get-unique-email-contacts author-records3 unique-emails '()))
 	 ;;comment next line for testing and pretty print
-;;	 (dummy4 (if (null? author-records4) #f (recurse-send-email author-records4) ))
+	 (dummy4 (if (null? author-records4) #f (recurse-send-email author-records4) ))
 	 )     
-   ;; #f
-    (pretty-print author-records4)
+    #f
+   ;; (pretty-print author-records4)
     ))
 
 
