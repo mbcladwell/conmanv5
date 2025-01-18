@@ -69,3 +69,15 @@ Notes
 
 ;; cd /home/mbc/projects/conmanv3 &&  guix environment --manifest=manifest.scm -- guile -L /home/mbc/projects -e main -s ./conman.scm 1 30
 
+
+stored procedure new_customer
+
+BEGIN
+DECLARE last_customer_id INT DEFAULT 0;
+INSERT INTO customer (first_name, last_name, institution, email, product) VALUES(_fname, _lname, _institution, _email, _product);
+SET last_customer_id = LAST_INSERT_ID();
+UPDATE  payment SET customer_id =last_customer_id, expect=_coin_req  WHERE transaction_id IS NULL AND customer_id IS NULL and currency LIKE _currency LIMIT 1;
+SELECT wallet_id INTO @returned_wallet_id FROM payment WHERE customer_id = last_customer_id;
+SELECT @returned_wallet_id;
+
+END

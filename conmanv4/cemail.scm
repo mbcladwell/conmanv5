@@ -4,11 +4,13 @@
    #:use-module (ice-9 textual-ports)
    #:use-module (ice-9 pretty-print)
    #:use-module (conmanv4 recs)
+   #:use-module (dbi dbi)
   ; #:use-module ()
    #:export (send-report
 	     send-custom-email
 	     recurse-send-email
 	     emails-sent
+	     fname-from-email
  	    ))
 
 
@@ -35,6 +37,10 @@
   ;;  ("firstn" . "Rana"))
   (let* (
 	 (email (contact-email a-contact))
+	 (sql (format #f "SELECT * FROM unsubscribe WHERE email LIKE '~a';" email))	 
+	 (ciccio (dbi-open "mysql" "plapan_conman_ad:welcome:plapan_conman:tcp:192.254.187.215:3306"))
+	 (_ (dbi-query ciccio sql))  	 
+	 (email (if (dbi-get_row ciccio) "null" email));;if email is in unsubscribe list set to null
 	 (firstn (contact-firstn a-contact) )
 	 (pmid (contact-pmid a-contact))
 	 (ref (assoc pmid ref-records))
@@ -81,16 +87,10 @@
   ;;  ("journal" . "Microorganisms")
   ;;  ("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")
   ;;  ("firstn" . "Rana"))
-  (let* ((str1 "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><head><title></title></head><body style=\"font-family:Arial;font-size:14px\">\n<p>Dear ")
-	 (str2 ",<br><br>\nYour recent article entitled \"")
-	 (str3 "\" in the journal <i>")
-	 (str4 "</i> suggests you might benefit from our product.<br>\nVisit <a href=\"http://www.labsolns.com\">Laboratory Automation Solutions</a> and learn how LIMS*Nucleus can help you.<br><br>\nLIMS*Nucleus can:<br><br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Associate assay data with plate sets<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Identify hits scoring in assays using included algorithms - or write your own<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Export annotated data<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Generate worklists for liquid handling robots<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Rearray hits into a smaller collection of plates<br>\n
-&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Track samples<br><br>\nLIMS*Nucleus can serve as the core of a LIMS system.<br>\nPrototype algorithms, dashboards, visualizations with R/Shiny.<br>\nDownload a free copy or evaluate an online running instance by visiting <a href=\"http://labsolns.com/software/evaluate/\">labsolns.com</a><br><br>\nThanks<br><br>\nMortimer Cladwell MSc<br>Principal<br><br>\n<a href=\"mailto:")
-	 (str5 "\">")
-	 (str6 "</a><br><br>\n<img src=\"cid:las.png\" style=\"width: 175px; height: 62px;\">\n</body></html>")
-	 (email (assoc-ref item "email"))
+  (let* ((email (assoc-ref item "email"))
 	 (first-name (if (fname-from-email email) (fname-from-email email)(assoc-ref item "firstn")))
-	 (html-composite (string-append str1 first-name  str2 (assoc-ref item "title") str3 (assoc-ref item "journal") str4 personal-email str5 personal-email str6 ))
+	 (html-composite (format #f "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><head><title></title></head><body style=\"font-family:Arial;font-size:14px\">\n<p>Dear ~a,<br><br>\nYour recent article entitled ~a in the journal <i>~a</i> suggests you might benefit from our product.<br>\nVisit <a href=\"http://www.labsolns.com\">Laboratory Automation Solutions</a> and learn how LIMS*Nucleus can help you.<br><br>\nLIMS*Nucleus can:<br><br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Associate assay data with plate sets<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Identify hits scoring in assays using included algorithms - or write your own<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Export annotated data<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Generate worklists for liquid handling robots<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Rearray hits into a smaller collection of plates<br>\n
+&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Track samples<br><br>\nLIMS*Nucleus can serve as the core of a LIMS system.<br>\nPrototype algorithms, dashboards, visualizations with R/Shiny.<br>\nDownload a free copy or evaluate an online running instance by visiting <a href=\"http://labsolns.com/software/evaluate/\">labsolns.com</a><br><br>\nThanks<br><br>\nMortimer Cladwell MSc<br>Principal<br><br>\n<a href=\"mailto:~a\">~a</a><br><br>\n<img src=\"cid:las.png\" style=\"width: 175px; height: 62px;\"><br><br><a href=\"https://www.labsolns.com/limsn/unsubscribe/insert.php?email=~a\">Unsubscribe</a></body></html>" first-name (assoc-ref item "title")(assoc-ref item "journal") personal-email personal-email email))		 
 	 (dummy (system "rm /tmp/rnd*.txt"))
 	 (dummy (system "rm /tmp/rnd*.html"))
 	 (html-file-name (get-rand-file-name "rnd" "html"))
@@ -98,11 +98,7 @@
 	 (dummy (begin
 		  (put-string p html-composite )
 		  (force-output p)))
-	 (str7 "Dear ")
-	 (str8 ",\nYour recent article entitled \"")	 
-	 (str9 "\" in the journal ")
-	 (str10 " suggests you might benefit from our product.\nVisit Laboratory Automation Solutions at www.labsolns.com and learn how LIMS*Nucleus can help you.\n\nLIMS*Nucleus can:\n\n-Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate\n-Associate assay data with plate sets\n-Identify hits scoring in assays using included algorithms - or write your own\n-Export annotated data\n-Generate worklists for liquid handling robots\n-Rearray hits into a smaller collection of plates\n-Track samples\n\nLIMS*Nucleus can serve as the core of a LIMS system.\nPrototype algorithms, dashboards, visualizations with R/Shiny.\nDownload a free copy or evaluate an online running instance by visiting www.labsolns.com/software/evaluate/\n\nFor more information contact mbcladwell@labsolns.com\n\nThank You!\n\nMortimer Cladwell MSc\nPrincipal")
-	 (txt-composite (string-append str7 first-name str8 (assoc-ref item "title") str9 (assoc-ref item "journal") str10 ))
+	 (txt-composite (format #f "Dear ~a,\n\nYour recent article entitled ~a in the journal ~a  suggests you might benefit from our product. Visit Laboratory Automation Solutions at www.labsolns.com and learn how LIMS*Nucleus can help you.\n\nLIMS*Nucleus can:\n\n-Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate\n-Associate assay data with plate sets\n-Identify hits scoring in assays using included algorithms - or write your own\n-Export annotated data\n-Generate worklists for liquid handling robots\n-Rearray hits into a smaller collection of plates\n-Track samples\n\nLIMS*Nucleus can serve as the core of a LIMS system.\nPrototype algorithms, dashboards, visualizations with R/Shiny.\nDownload a free copy or evaluate an online running instance by visiting www.labsolns.com/limsn/evaluate/\n\nFor more information contact mbcladwell@labsolns.com\n\nThank You!\n\nMortimer Cladwell MSc\nPrincipal\n\nTo unsubscribe, paste the following URL into a browser:\n\nhttps://www.labsolns.com/limsn/unsubscribe/insert.php?email=~a\n" first-name (assoc-ref item "title")(assoc-ref item "journal") email))	 
 	 (txt-file-name (get-rand-file-name "rnd" "txt"))
 	 (p2  (open-output-file txt-file-name))
 	 (dummy (begin
@@ -113,7 +109,6 @@
 	 ;;comment out the next line for testing
 	 (dummy (system smtp-command))
 	 )
- 
   smtp-command
   ))
 
