@@ -11,8 +11,6 @@
 	     (ice-9 string-fun)  ;;string-replace-substring	   
 	     (ice-9 rdelim)
 	     (ice-9 i18n)   ;; internationalization	     	     	     
-	     (ice-9 readline)
-;;	     (ice-9 iconv)
 	     (ice-9 textual-ports)(ice-9 binary-ports)(ice-9 popen)
 	     (json)
 	     (gcrypt hash)

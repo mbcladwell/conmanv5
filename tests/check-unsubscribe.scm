@@ -13,14 +13,8 @@
 	     (ice-9 string-fun)  ;;string-replace-substring	   
 	     (ice-9 rdelim)
 	     (ice-9 i18n)   ;; internationalization	     	     	     
-;;	     (ice-9 readline)
-;;	     (ice-9 iconv)
 	     (ice-9 textual-ports)(ice-9 binary-ports)(ice-9 popen)
-;;	     (json)
-;;	     (gcrypt hash)
-;;	     (gcrypt base16)
 	     (rnrs bytevectors)
-	   ;; (rnrs io ports ) 
 	    (conmanv4 utilities)
 	    (conmanv4 munger)
 	    (conmanv4 pubmed)
