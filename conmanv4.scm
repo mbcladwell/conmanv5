@@ -33,7 +33,7 @@
 	 (stats-list (get-stats-list elapsed-time))
 	 (dummy7 (send-report stats-list  emails-sent))
 	 )
-  ;; (pretty-print a)
+;;   (pretty-print a)
     (pretty-print (string-append "Elapsed time: " (number->string  elapsed-time) " minutes." ))
    ;; #f
     ))
