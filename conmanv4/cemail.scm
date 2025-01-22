@@ -66,7 +66,7 @@
 
 
 (define (get-rand-file-name pre suff)
-  (string-append "/tmp/" pre "-" (number->string (random 10000000000000000000000)) "." suff))
+  (string-append "./tmp/" pre "-" (number->string (random 10000000000000000000000)) "." suff))
 
 (define (build-sent-list lst text)
   ;;lst is the list of emails sent (("firstn" . "a")("email" . "ea"))
