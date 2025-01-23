@@ -66,7 +66,7 @@
 
 
 (define (get-rand-file-name pre suff)
-  (string-append "/home/admin/conman/tmp/" pre "-" (number->string (random 10000000000000000000000)) "." suff))
+  (string-append "/home2/plapan/public_html/conman/tmp/" pre "-" (number->string (random 10000000000000000000000)) "." suff))
 
 (define (build-sent-list lst text)
   ;;lst is the list of emails sent (("firstn" . "a")("email" . "ea"))
@@ -91,8 +91,8 @@
 	 (first-name (if (fname-from-email email) (fname-from-email email)(assoc-ref item "firstn")))
 	 (html-composite (format #f "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><head><title></title></head><body style=\"font-family:Arial;font-size:14px\">\n<p>Dear ~a,<br><br>\nYour recent article entitled ~a in the journal <i>~a</i> suggests you might benefit from our product.<br>\nVisit <a href=\"http://www.labsolns.com\">Laboratory Automation Solutions</a> and learn how LIMS*Nucleus can help you.<br><br>\nLIMS*Nucleus can:<br><br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Associate assay data with plate sets<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Identify hits scoring in assays using included algorithms - or write your own<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Export annotated data<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Generate worklists for liquid handling robots<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Rearray hits into a smaller collection of plates<br>\n
 &nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Track samples<br><br>\nLIMS*Nucleus can serve as the core of a LIMS system.<br>\nPrototype algorithms, dashboards, visualizations with R/Shiny.<br>\nDownload a free copy or evaluate an online running instance by visiting <a href=\"http://labsolns.com/software/evaluate/\">labsolns.com</a><br><br>\nThanks<br><br>\nMortimer Cladwell MSc<br>Principal<br><br>\n<a href=\"mailto:~a\">~a</a><br><br>\n<img src=\"cid:las.png\" style=\"width: 175px; height: 62px;\"><br><br><a href=\"https://www.labsolns.com/limsn/unsubscribe/insert.php?email=~a\">Unsubscribe</a></body></html>" first-name (assoc-ref item "title")(assoc-ref item "journal") personal-email personal-email email))		 
-	 (dummy (system "rm /tmp/rnd*.txt"))
-	 (dummy (system "rm /tmp/rnd*.html"))
+	 (dummy (system "rm /home2/plapan/public_html/conman/tmp/rnd*.txt"))
+	 (dummy (system "rm /home2/plapan/public_html/conman/tmp/rnd*.html"))
 	 (html-file-name (get-rand-file-name "rnd" "html"))
 	 (p  (open-output-file html-file-name))
 	 (dummy (begin
