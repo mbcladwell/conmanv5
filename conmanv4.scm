@@ -27,13 +27,13 @@
   (let* ((start-time (current-time time-monotonic))
 ;;	 (a (get-summaries (cadr args) (caddr args)))
 	 (a (get-summaries days-ago max-arts))
-;;	 (dummy (map retrieve-article a))  ;;this does all the work; comment out last line for testing
+	 (dummy (map retrieve-article a))  ;;this does all the work; comment out last line for testing
 	 (stop-time (current-time time-monotonic))
 	 (elapsed-time (ceiling (/ (time-second (time-difference stop-time start-time)) 60)))
 	 (stats-list (get-stats-list elapsed-time))
-;;	 (dummy7 (send-report stats-list  emails-sent))
+	 (dummy7 (send-report stats-list  emails-sent))
 	 )
-   (pretty-print a)
+;;   (pretty-print a)
     (pretty-print (string-append "Elapsed time: " (number->string  elapsed-time) " minutes." ))
    ;; #f
     ))
