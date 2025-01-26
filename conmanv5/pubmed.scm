@@ -1,4 +1,4 @@
-(define-module (conmanv4 pubmed)
+(define-module (conmanv5 pubmed)
   #:use-module (ice-9 regex) ;;list-matches
  ;; (srfi srfi-19)   ;; date time
  #:use-module (web response)
@@ -7,11 +7,11 @@
  #:use-module (web client)
  #:use-module (ice-9 receive)	     
  #:use-module (gnutls)	     
- #:use-module (conmanv4 recs)	     
- #:use-module (conmanv4 utilities)	     
- #:use-module (conmanv4 munger)
- #:use-module (conmanv4 env)
- #:use-module (conmanv4 cemail)
+ #:use-module (conmanv5 recs)	     
+ #:use-module (conmanv5 utilities)	     
+ #:use-module (conmanv5 munger)
+ #:use-module (conmanv5 env)
+ #:use-module (conmanv5 cemail)
  #:use-module (ice-9 string-fun)  ;;string-replace-substring
  #:use-module (srfi srfi-1)  ;;list searching; delete-duplicates in list 
  #:use-module  (srfi srfi-19)   ;; date time

@@ -1,10 +1,10 @@
-(define-module (conmanv4)
-#:use-module (conmanv4 env)  
-#:use-module (conmanv4 utilities)
-#:use-module (conmanv4 recs)
-#:use-module (conmanv4 munger)
-#:use-module (conmanv4 pubmed)
-#:use-module (conmanv4 cemail)
+(define-module (conmanv5)
+#:use-module (conmanv5 env)  
+#:use-module (conmanv5 utilities)
+#:use-module (conmanv5 recs)
+#:use-module (conmanv5 munger)
+#:use-module (conmanv5 pubmed)
+#:use-module (conmanv5 cemail)
 #:use-module (srfi srfi-19)   ;; date time
 #:use-module (srfi srfi-1)  ;;list searching; delete-duplicates in list 
 #:use-module (ice-9 pretty-print)
@@ -14,11 +14,11 @@
 ;;#! /bin/bash
 
 ;;source /home/admin/.guix-profile/etc/profile
-;;export PATH=/home/admin/conmanv4/bin:${PATH:+:}$PATH
-;;export GUILE_LOAD_PATH=/gnu/store/5yvzilh78996627i8avq532sl2c03i95-gnutls-3.6.15/share/guile/site/3.0:/home/admin/conmanv4:${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH
-;;/gnu/store/m5iprcg6pb5ch86r9agmqwd8v6kp7999-guile-3.0.5/bin/guile -e '(conmanv4)' -s /home/admin/conmanv4/conmanv4.scm blah
+;;export PATH=/home/admin/conmanv5/bin:${PATH:+:}$PATH
+;;export GUILE_LOAD_PATH=/gnu/store/5yvzilh78996627i8avq532sl2c03i95-gnutls-3.6.15/share/guile/site/3.0:/home/admin/conmanv5:${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH
+;;/gnu/store/m5iprcg6pb5ch86r9agmqwd8v6kp7999-guile-3.0.5/bin/guile -e '(conmanv5)' -s /home/admin/conmanv5/conmanv5.scm blah
 
-;;2024-01-30 use guile -e '(conmanv4)' -L . -s ./conmanv4.scm blah from project directory
+;;2024-01-30 use guile -e '(conmanv5)' -L . -s ./conmanv5.scm blah from project directory
 
 
 (define (main args)
@@ -49,7 +49,13 @@
 ;;     - fast: munger/get-author-records extracts authors from article; also extracts affiliations
 ;;
 ;;
+;;  guile -L . -e (@@ (conmanv5 cemail) send-custom-email) -s (list (("email" . "plapan@disroot.org")("journal" . "Microorganisms")("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")("firstn" . "Rana"))) 
 ;;
 ;;
 ;;
-;;
+;;  guile -L . -c (@@ (conmanv5 cemail) send-custom-email) -s (list (("email" . "plapan@disroot.org")("journal" . "Microorganisms")("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")("firstn" . "Rana")))
+
+;; guile -L . -l "./conmanv5/cemail.scm" -e (@ (conmanv5 cemail) send-custom-email) "a"
+
+
+;; guile -e '(load "./conmanv5/cemail.scm") (send-custom-email "a")'

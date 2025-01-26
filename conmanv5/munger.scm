@@ -1,7 +1,7 @@
-(define-module (conmanv4 munger)
-  #:use-module (conmanv4 env)
-  #:use-module (conmanv4 recs)
-  #:use-module (conmanv4 utilities)
+(define-module (conmanv5 munger)
+  #:use-module (conmanv5 env)
+  #:use-module (conmanv5 recs)
+  #:use-module (conmanv5 utilities)
   #:use-module (ice-9 regex) ;;list-matches
  #:use-module (ice-9 receive)	     
 

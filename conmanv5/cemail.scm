@@ -1,16 +1,17 @@
-(define-module (conmanv4 cemail)
-  #:use-module (conmanv4 env)
+(define-module (conmanv5 cemail)
+  #:use-module (conmanv5 env)
    #:use-module (ice-9 regex) ;;list-matches
    #:use-module (ice-9 textual-ports)
    #:use-module (ice-9 pretty-print)
-   #:use-module (conmanv4 recs)
+   #:use-module (conmanv5 recs)
    #:use-module (dbi dbi)
   ; #:use-module ()
    #:export (send-report
 	     send-custom-email
 	     recurse-send-email
-	     emails-sent
+	     emails-sent	     
 	     fname-from-email
+	     main
  	    ))
 
 
@@ -27,6 +28,9 @@
 	 (b (string-index a #\.))
 	 (c (if b (string-capitalize! (substring a 0 b))  #f)))
     c))
+
+
+;;(define a-contact (make-contact "28374827" "3" "qname" "Peter LaPan" "Peter" "LaPan" "GI" "plapan@disroot.org"))
 
 (define (send-email a-contact)
   ;;the ref records have journal and title info, search with pmid
@@ -88,6 +92,7 @@
   ;;  ("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")
   ;;  ("firstn" . "Rana"))
   (let* ((email (assoc-ref item "email"))
+	 (_ (pretty-print (string-append "the email: " email)))
 	 (first-name (if (fname-from-email email) (fname-from-email email)(assoc-ref item "firstn")))
 	 (html-composite (format #f "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><head><title></title></head><body style=\"font-family:Arial;font-size:14px\">\n<p>Dear ~a,<br><br>\nYour recent article entitled ~a in the journal <i>~a</i> suggests you might benefit from our product.<br>\nVisit <a href=\"http://www.labsolns.com\">Laboratory Automation Solutions</a> and learn how LIMS*Nucleus can help you.<br><br>\nLIMS*Nucleus can:<br><br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Associate assay data with plate sets<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Identify hits scoring in assays using included algorithms - or write your own<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Export annotated data<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Generate worklists for liquid handling robots<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Rearray hits into a smaller collection of plates<br>\n
 &nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Track samples<br><br>\nLIMS*Nucleus can serve as the core of a LIMS system.<br>\nPrototype algorithms, dashboards, visualizations with R/Shiny.<br>\nDownload a free copy or evaluate an online running instance by visiting <a href=\"http://labsolns.com/software/evaluate/\">labsolns.com</a><br><br>\nThanks<br><br>\nMortimer Cladwell MSc<br>Principal<br><br>\n<a href=\"mailto:~a\">~a</a><br><br>\n<img src=\"cid:las.png\" style=\"width: 175px; height: 62px;\"><br><br><a href=\"https://www.labsolns.com/limsn/unsubscribe/insert.php?email=~a\">Unsubscribe</a></body></html>" first-name (assoc-ref item "title")(assoc-ref item "journal") personal-email personal-email email))		 
@@ -136,3 +141,8 @@
   
   ))
 
+(define (main args)
+  (send-custom-email '((("email" . "plapan@disroot.org")("journal" . "Microorganisms")("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")("firstn" . "Rana"))))
+)
+
+;; guile -L . -l "./conmanv5/cemail.scm" -e main -s "a"
