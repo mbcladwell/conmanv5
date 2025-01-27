@@ -7,13 +7,19 @@
  #:use-module (web client)
  #:use-module (ice-9 pretty-print)
  #:use-module (srfi srfi-1) 
+ #:use-module (srfi srfi-19) ;;date time 
+ #:use-module (conmanv5 env) 
   #:export (find-occurences-in-string
 	    any-not-false?
 	    to-regular-char
 	    recurse-lst-add-index
 	    first-or-last-auth?
-	    recurse-remove-italicization	    
+	    recurse-remove-italicization
+	    get-rand-file-name
 	    ))
+
+(define (get-rand-file-name pre suff)
+  (string-append home-dir "/tmp/" pre "-" (substring (string-append (number->string  (time-second (current-time)))(number->string  (time-nanosecond (current-time)))) 0 16) "." suff))
 
 
 (define (first-or-last-auth? auth pmid)

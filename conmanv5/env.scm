@@ -8,11 +8,19 @@
 	    days-ago
 	    max-arts
 	    laspng
+	    sender
+	    bcc-recipient
+	    personal-email
+	    home-dir
 	    ))
 
 ;;(define conman-store-dir "conmanstorepath") ;;this will be modified upon install
 (define conman-store-dir "conmanstorepath") ;;this will be modified upon install
 
+(define sender "mbc2025@labsolns.com")
+(define bcc-recipient "mbc2025@labsolns.com")
+(define personal-email "mbcladwell@labsolns.com")
+(define home-dir "/home/ubuntu")
 
 (define days-ago 14) ;; how many days ago to I want to analyze?
 ;; 14*60*60*24 = 1209600
@@ -24,6 +32,7 @@
 (define two-weeks-ago (date->string  (time-utc->date (subtract-duration (current-time) duration)) "~Y/~m/~d"))
 (define all-chars "-a-zA-Z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜƏƒƠơƯƯǺǻǼǽǾǿńŻć<>~_+=,.:;()&#@®\" ")
 
+;;base64 of las.png
 (define laspng " iVBORw0KGgoAAAANSUhEUgAAAgYAAACvCAYAAACGsxavAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wEaCjEQiL3P
 xwAAIABJREFUeNrsnXe4nVP2xz8rleQGQYogem8RnYjeQrQhYzAjuhmDUUYbnRGGZMiPUYbRjU4Q0VukECV6jRoiRZBK2vr9sdcZ791nv+e8p9x7z439fZ7z
 JPdt691r73fvtVcVVSUiIiIiIiIiAqBFZEFEREREREREFAwiIiIiIiIiomAQEREREREREQWDiIiIiIiIiCgYRERERERERETBICIiIiIiIiIKBhERERERERGV

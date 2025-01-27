@@ -1,23 +1,20 @@
 (define-module (conmanv5 cemail)
   #:use-module (conmanv5 env)
-   #:use-module (ice-9 regex) ;;list-matches
-   #:use-module (ice-9 textual-ports)
-   #:use-module (ice-9 pretty-print)
-   #:use-module (conmanv5 recs)
-   #:use-module (dbi dbi)
+  #:use-module (conmanv5 utilities)
+  #:use-module (conmanv5 recs)
+  #:use-module (ice-9 regex) ;;list-matches
+  #:use-module (ice-9 textual-ports)
+  #:use-module (ice-9 pretty-print)
+  #:use-module (dbi dbi)
   ; #:use-module ()
-   #:export (send-report
-	     send-custom-email
-	     recurse-send-email
-	     emails-sent	     
-	     fname-from-email
-	     main
+  #:export (send-report
+	    send-custom-email
+	    recurse-send-email
+	    emails-sent	     
+	    fname-from-email
+	    main
  	    ))
 
-
-(define emailer "mbc2025@labsolns.com")
-(define password "7]Dg8E_zTPEU6M")
-(define personal-email "mbcladwell@labsolns.com")
 
 (define emails-sent '())  ;;if an email is sent, cons it to this list
 
@@ -69,9 +66,6 @@
 	(recurse-send-email (cdr lst)))))
 
 
-(define (get-rand-file-name pre suff)
-  (string-append "/home/admin/conman/tmp/" pre "-" (number->string (random 10000000000000000000000)) "." suff))
-
 (define (build-sent-list lst text)
   ;;lst is the list of emails sent (("firstn" . "a")("email" . "ea"))
   ;;recurse over the list and build the email contents
@@ -91,58 +85,46 @@
   ;;  ("journal" . "Microorganisms")
   ;;  ("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")
   ;;  ("firstn" . "Rana"))
-  (let* ((email (assoc-ref item "email"))
-	 (_ (pretty-print (string-append "the email: " email)))
+  (let* (
+;;	 (email (assoc-ref item "email"))
+	 (email "mbcladwell@labsolns.com")
+;;	 (_ (pretty-print (string-append "the email: " email)))
 	 (first-name (if (fname-from-email email) (fname-from-email email)(assoc-ref item "firstn")))
-	 (html-composite (format #f "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><head><title></title></head><body style=\"font-family:Arial;font-size:14px\">\n<p>Dear ~a,<br><br>\nYour recent article entitled ~a in the journal <i>~a</i> suggests you might benefit from our product.<br>\nVisit <a href=\"http://www.labsolns.com\">Laboratory Automation Solutions</a> and learn how LIMS*Nucleus can help you.<br><br>\nLIMS*Nucleus can:<br><br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Associate assay data with plate sets<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Identify hits scoring in assays using included algorithms - or write your own<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Export annotated data<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Generate worklists for liquid handling robots<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Rearray hits into a smaller collection of plates<br>\n
-&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Track samples<br><br>\nLIMS*Nucleus can serve as the core of a LIMS system.<br>\nPrototype algorithms, dashboards, visualizations with R/Shiny.<br>\nDownload a free copy or evaluate an online running instance by visiting <a href=\"http://labsolns.com/software/evaluate/\">labsolns.com</a><br><br>\nThanks<br><br>\nMortimer Cladwell MSc<br>Principal<br><br>\n<a href=\"mailto:~a\">~a</a><br><br>\n<img src=\"cid:las.png\" style=\"width: 175px; height: 62px;\"><br><br><a href=\"https://www.labsolns.com/limsn/unsubscribe/insert.php?email=~a\">Unsubscribe</a></body></html>" first-name (assoc-ref item "title")(assoc-ref item "journal") personal-email personal-email email))		 
-	 (dummy (system "rm /home/admin/conman/tmp/rnd*.txt"))
-	 (dummy (system "rm /home/admin/conman/tmp/rnd*.html"))
-	 (html-file-name (get-rand-file-name "rnd" "html"))
-	 (p  (open-output-file html-file-name))
-	 (dummy (begin
-		  (put-string p html-composite )
-		  (force-output p)))
-	 (txt-composite (format #f "Dear ~a,\n\nYour recent article entitled ~a in the journal ~a  suggests you might benefit from our product. Visit Laboratory Automation Solutions at www.labsolns.com and learn how LIMS*Nucleus can help you.\n\nLIMS*Nucleus can:\n\n-Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate\n-Associate assay data with plate sets\n-Identify hits scoring in assays using included algorithms - or write your own\n-Export annotated data\n-Generate worklists for liquid handling robots\n-Rearray hits into a smaller collection of plates\n-Track samples\n\nLIMS*Nucleus can serve as the core of a LIMS system.\nPrototype algorithms, dashboards, visualizations with R/Shiny.\nDownload a free copy or evaluate an online running instance by visiting www.labsolns.com/limsn/evaluate/\n\nFor more information contact mbcladwell@labsolns.com\n\nThank You!\n\nMortimer Cladwell MSc\nPrincipal\n\nTo unsubscribe, paste the following URL into a browser:\n\nhttps://www.labsolns.com/limsn/unsubscribe/insert.php?email=~a\n" first-name (assoc-ref item "title")(assoc-ref item "journal") email))	 
-	 (txt-file-name (get-rand-file-name "rnd" "txt"))
-	 (p2  (open-output-file txt-file-name))
-	 (dummy (begin
-		  (put-string p2 txt-composite )
-		  (force-output p2)))
-	 ;; (smtp-command (string-append conman-store-dir "/bin/smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user info@labsolns.com --password EKhD8GB48F8wFalt --from info@labsolns.com --to " (assoc-ref item "email") " --bcc info@labsolns.com --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
-	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Multi-well plate management software' --enable-auth --user " emailer " --password " password " --from " emailer " --to " (assoc-ref item "email") " --bcc " emailer " --body-plain " txt-file-name " --body-html " html-file-name " --attach-inline " conman-store-dir "/scripts/las.png"))
-	 ;;comment out the next line for testing
-	 (dummy (system smtp-command))
+	 (txt-composite (format #f "Content-Transfer-Encoding: binary\nContent-Type: multipart/alternative; boundary=\"_----------=_1737893771238871\"\nMIME-Version: 1.0\nDate: ~a\nFrom: ~a\nTo: ~a\nBcc: ~a\nSubject: Multi-well plate management software\n\n--_----------=_1737893771238871\nContent-Disposition: inline\nContent-Transfer-Encoding: quoted-printable\nContent-Type: text/plain\n\nDear ~a,\n\nYour recent article entitled ~a in the journal ~a  suggests you might benefit from our product. Visit Laboratory Automation Solutions at www.labsolns.com and learn how LIMS*Nucleus can help you.\n\nLIMS*Nucleus can:\n\n-Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate\n-Associate assay data with plate sets\n-Identify hits scoring in assays using included algorithms - or write your own\n-Export annotated data\n-Generate worklists for liquid handling robots\n-Rearray hits into a smaller collection of plates\n-Track samples\n\nLIMS*Nucleus can serve as the core of a LIMS system.\nPrototype algorithms, dashboards, visualizations with R/Shiny.\nDownload a free copy or evaluate an online running instance by visiting www.labsolns.com/limsn/evaluate/\n\nFor more information contact mbcladwell@labsolns.com\n\nThank You!\n\nMortimer Cladwell MSc\nPrincipal\n\nTo unsubscribe, paste the following URL into a browser:\n\nhttps://www.labsolns.com/limsn/unsubscribe/insert.php?email=~a\n\n--_----------=_1737893771238871\nContent-Transfer-Encoding: binary\nContent-Type: multipart/related; boundary=\"_----------=_1737893771238870\"\n\nThis is a multi-part message in MIME format.\n\n" (date->string (current-date)) sender email bcc-recipient first-name (assoc-ref item "title")(assoc-ref item "journal") email))	
+	 (html-composite (format #f "--_----------=_1737893771238870\nContent-Disposition: inline\nContent-Transfer-Encoding: 8bit\nContent-Type: text/html\n\n<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><head><title></title></head><body style=\"font-family:Arial;font-size:14px\">\n<p>Dear ~a,<br><br>\nYour recent article entitled ~a in the journal <i>~a</i> suggests you might benefit from our product.<br>\nVisit <a href=\"http://www.labsolns.com\">Laboratory Automation Solutions</a> and learn how LIMS*Nucleus can help you.<br><br>\nLIMS*Nucleus can:<br><br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Reformat plates - four 96 well plates into a 384 well plate; four 384 well plates into a 1536 well plate<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Associate assay data with plate sets<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Identify hits scoring in assays using included algorithms - or write your own<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Export annotated data<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Generate worklists for liquid handling robots<br>\n&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Rearray hits into a smaller collection of plates<br>\n
+&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; &nbsp;Track samples<br><br>\nLIMS*Nucleus can serve as the core of a LIMS system.<br>\nPrototype algorithms, dashboards, visualizations with R/Shiny.<br>\nDownload a free copy or evaluate an online running instance by visiting <a href=\"http://labsolns.com/software/evaluate/\">labsolns.com</a><br><br>\nThanks<br><br>\nMortimer Cladwell MSc<br>Principal<br><br>\n<a href=\"mailto:~a\">~a</a><br><br>\n<img src=\"data:image/png;base64,  ~a\" style=\"width: 175px; height: 62px;\"><br><br><a href=\"https://www.labsolns.com/limsn/unsubscribe/insert.php?email=~a\">Unsubscribe</a></body></html>\n--_----------=_1737893771238870--\n\n--_----------=_1737893771238871--\n" first-name (assoc-ref item "title")(assoc-ref item "journal") personal-email personal-email laspng email))
+	 (_ (system (string-append "rm " home-dir "/tmp/rnd*.txt")))
+	 (out-file-name  (get-rand-file-name "rnd" "txt"))
+	 (p  (open-output-file out-file-name))
+	 (_ (begin
+	      (put-string p (string-append txt-composite html-composite ))
+	      (force-output p)))
+	 (msmtp-command (string-append "cat " out-file-name " | msmtp -t" ))
+	 (_ (system msmtp-command))
 	 )
-  smtp-command
-  ))
-
+	 #f))
 
 (define (send-report lst alist)
   ;; lst is the stats
   ;; alist is emails that were sent, migt be null
   ;; (list (cons "firstn" firstn)(cons "email" email)) etc loop over to pull out names and emails
   (let* (
-	 (str1 (string-append "Article count: " (cdr (assoc "article" lst)) "\n"))
-	 (str2 (string-append "Author count: " (cdr (assoc "author" lst)) "\n"))
-	 (str3 (string-append "Author find count: " (cdr (assoc "author-find" lst)) "\n"))
-	 (str4 (string-append "Elapsed time: " (cdr (assoc  "elapsed-time" lst)) " minutes.\n\n"))
-	 (str5 (if (null?  alist) "null" (build-sent-list alist "")))
-	 (txt-composite (string-append str1 str2 str3 str4 str5))
+	 (str1 (string-append "From: " sender "\nTo: " personal-email "\n"))
+	 (str2 (string-append "Article count: " (cdr (assoc "article" lst)) "\n"))
+	 (str3 (string-append "Author count: " (cdr (assoc "author" lst)) "\n"))
+	 (str4 (string-append "Author find count: " (cdr (assoc "author-find" lst)) "\n"))
+	 (str5 (string-append "Elapsed time: " (cdr (assoc  "elapsed-time" lst)) " minutes.\n\n"))
+	 (str6 (if (null?  alist) "null" (build-sent-list alist "")))
+	 (txt-composite (string-append str1 str2 str3 str4 str5 str6))
 	 (txt-file-name (get-rand-file-name "rnd" "txt"))
 	 (p2  (open-output-file txt-file-name))
 	 (dummy (begin
 		  (put-string p2 txt-composite )
 		  (force-output p2)))
-	 (smtp-command (string-append "smtp-cli --host mail.labsolns.com:587 --subject 'Summary for batch " (assoc-ref lst "batchid") "' --enable-auth --user " emailer " --password " password " --from " emailer " --to " emailer " --body-plain " txt-file-name ))
-	 (dummy (system smtp-command))
+	 (msmtp-command (string-append "cat  " txt-file-name " | msmtp -t" ))
+	 (dummy (system msmtp-command))
 	 )
-    #f
-  
-  ))
+    #f))
 
-(define (main args)
-  (send-custom-email '((("email" . "plapan@disroot.org")("journal" . "Microorganisms")("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")("firstn" . "Rana"))))
-)
 
-;; guile -L . -l "./conmanv5/cemail.scm" -e main -s "a"
+

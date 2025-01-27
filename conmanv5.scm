@@ -49,13 +49,3 @@
 ;;     - fast: munger/get-author-records extracts authors from article; also extracts affiliations
 ;;
 ;;
-;;  guile -L . -e (@@ (conmanv5 cemail) send-custom-email) -s (list (("email" . "plapan@disroot.org")("journal" . "Microorganisms")("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")("firstn" . "Rana"))) 
-;;
-;;
-;;
-;;  guile -L . -c (@@ (conmanv5 cemail) send-custom-email) -s (list (("email" . "plapan@disroot.org")("journal" . "Microorganisms")("title" . "Repurposing Drugs for Mayaro Virus: Identification.... Inhibitors.")("firstn" . "Rana")))
-
-;; guile -L . -l "./conmanv5/cemail.scm" -e (@ (conmanv5 cemail) send-custom-email) "a"
-
-
-;; guile -e '(load "./conmanv5/cemail.scm") (send-custom-email "a")'
