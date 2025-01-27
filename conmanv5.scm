@@ -49,3 +49,5 @@
 ;;     - fast: munger/get-author-records extracts authors from article; also extracts affiliations
 ;;
 ;;
+
+;; /home/ubuntu/conman/bin/conman.sh >/home/ubuntu/conman/conman.log 2>&1
