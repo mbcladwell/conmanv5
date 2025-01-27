@@ -15,8 +15,7 @@
  #:use-module (ice-9 string-fun)  ;;string-replace-substring
  #:use-module (srfi srfi-1)  ;;list searching; delete-duplicates in list 
  #:use-module  (srfi srfi-19)   ;; date time
- #:use-module (ice-9 pretty-print)
- #:use-module (gnu packages tls) 
+ #:use-module (ice-9 pretty-print) 
  #:export (recurse-get-missing-email
 	   retrieve-article
 	   get-summaries
