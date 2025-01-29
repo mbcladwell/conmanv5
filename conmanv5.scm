@@ -20,18 +20,19 @@
 
 ;;2024-01-30 use guile -e '(conmanv5)' -L . -s ./conmanv5.scm blah from project directory
 
+;; guix shell --manifest=manifest.scm -- guile -e '(conmanv5)' -L . -s ./conmanv5.scm
 
 (define (main args)
   ;; args: '( "script name" "past days to query" "Number of articles to pull")
   ;; 2023-10-01 revision requires single arg that is not used
   (let* ((start-time (current-time time-monotonic))
-;;	 (a (get-summaries (cadr args) (caddr args)))
+	 ;;	 (a (get-summaries (cadr args) (caddr args)))
 	 (a (get-summaries days-ago max-arts))
 	 (dummy (map retrieve-article a))  ;;this does all the work; comment out last line for testing
 	 (stop-time (current-time time-monotonic))
 	 (elapsed-time (ceiling (/ (time-second (time-difference stop-time start-time)) 60)))
 	 (stats-list (get-stats-list elapsed-time))
-	 (dummy7 (send-report stats-list  emails-sent))
+	 (dummy7 (send-report stats-list  (@@ (conmanv5 cemail) emails-sent)))
 	 )
 ;;   (pretty-print a)
     (pretty-print (string-append "Elapsed time: " (number->string  elapsed-time) " minutes." ))

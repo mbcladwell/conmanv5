@@ -1,7 +1,7 @@
 (define-module (conmanv5 recs)
   #:use-module (ice-9 regex) ;;list-matches
   #:use-module  (srfi srfi-9)  ;;records
-   #:use-module (ice-9 pretty-print)
+  #:use-module (ice-9 pretty-print)
   #:export (make-ref-records
 	    ref-records
 	    get-ref-records
@@ -11,8 +11,8 @@
 	    recurse-update-contact-records
 	    make-contact
 	    contact-firstn
+	    contact-wholen
 	    contact-pmid
-	    
 	    contact-email
 	    contact-affil
 	    contact-qname
@@ -39,10 +39,10 @@
   (if (null? (cdr pmid))
       (begin
 	(set! ref-records (acons  (car pmid) (make-reference (car pmid) (car journal) (car title)) ref-records))
-;;	(pretty-print (string-append "in first level of make-ref-records: "))
 ;;	(display ref-records)
 	ref-records)
       (begin
+;;	(pretty-print (string-append "in first level of make-ref-records: "))
 	(set! ref-records (acons (car pmid) (make-reference (car pmid) (car journal) (car title)) ref-records))
 	(make-ref-records (cdr pmid) (cdr journal) (cdr title) ))))
 

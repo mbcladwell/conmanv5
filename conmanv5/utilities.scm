@@ -19,7 +19,7 @@
 	    ))
 
 (define (get-rand-file-name pre suff)
-  (string-append home-dir "/tmp/" pre "-" (substring (string-append (number->string  (time-second (current-time)))(number->string  (time-nanosecond (current-time)))) 0 16) "." suff))
+  (string-append home-dir "/tmp/" pre "-" (substring (string-append (number->string  (time-second (current-time)))(number->string  (time-nanosecond (current-time)))) 0 12) "." suff))
 
 
 (define (first-or-last-auth? auth pmid)

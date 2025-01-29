@@ -150,17 +150,22 @@
 	 (affils-alist '())
 	 (affils-alist (if (null? author-records) #f (get-affils-alist the-body )))
 	 (author-records2 (if (null? affils-alist) #f (recurse-update-contact-records 1 pmid indexed-auth-lst author-records affils-alist '())))
-	 
+	 (_ (pretty-print author-records2))
 ;;	 (author-records2 (if  affils-alist (recurse-update-contact-records 1 pmid indexed-auth-lst author-records affils-alist '()) #f ))
 	 (author-records3 (if (null? author-records2) #f (recurse-get-missing-email author-records2 '())))
 ;;	 (author-records3 (if  author-records2 (recurse-get-missing-email author-records2 '()) #f))
 	 (unique-emails (recurse-get-unique-emails author-records3 '()))
+;;	  (_ (pretty-print  "unique-emails:"))
+;;	 (_ (pretty-print  unique-emails))
 	 (author-records4 (get-unique-email-contacts author-records3 unique-emails '()))
 	 ;;comment next line for testing and pretty print
 	 (dummy4 (if (null? author-records4) #f (recurse-send-email author-records4) ))
 	 )     
-    #f
-   ;; (pretty-print author-records4)
+       #f
+    ;; (begin
+    ;;   (pretty-print "unique author contacts: ")
+    ;;   (pretty-print  author-records4)
+    ;;   )
     ))
 
 
@@ -303,15 +308,20 @@
   ;; output is a list of unique emails, but still contains nulls
   (if (null? (cdr contacts))
       (begin
-	(cons (contact-email (car contacts)) unique-emails )
+	(set! unique-emails (cons (contact-email (car contacts)) unique-emails))
 	(delete-duplicates! unique-emails))
-      (recurse-get-unique-emails (cdr contacts)
-				 (cons (contact-email (car contacts)) unique-emails ))))
+      (begin
+	(set! unique-emails (cons (contact-email (car contacts)) unique-emails ))
+	(recurse-get-unique-emails (cdr contacts) unique-emails)
+				 )))
 
 
  (define (scan-records-for-email contacts email)
    (if (null? (cdr contacts))
-       (car contacts) ;;the only one left
+        (begin                  ;;the only one left
+	 (if (string= (contact-email (car contacts)) email)
+	     (car contacts)
+	     #f)) 
        (begin
 	 (if (string= (contact-email (car contacts)) email)
 	     (car contacts)
@@ -319,25 +329,13 @@
 
 (define (get-unique-email-contacts contacts unique-emails unique-contacts)
      (if (null? (cdr unique-emails))
-	 (cons (scan-records-for-email contacts (car unique-emails)) unique-contacts)	   
-	 (get-unique-email-contacts contacts (cdr unique-emails)
-				    (cons (scan-records-for-email contacts (car unique-emails)) unique-contacts) )))
+	 (begin
+	   (set! unique-contacts (cons (scan-records-for-email contacts (car unique-emails)) unique-contacts))
+	   unique-contacts)
+	 (begin
+	   (set! unique-contacts (cons (scan-records-for-email contacts (car unique-emails)) unique-contacts))
+	   (get-unique-email-contacts contacts (cdr unique-emails) unique-contacts ))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;working on this
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;; (define (scan-records-for-email contacts email matching-contact)
-
-;;   )
-
-;; (define (get-unique-email-contacts contacts unique-email-contacts-out)
-;;   (let* ((unique-emails (recurse-get-unique-emails contacts '())
-	 
-;; 	 )
-
-;;     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; email end

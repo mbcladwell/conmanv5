@@ -1,17 +1,18 @@
 (define-module (conmanv5 env)
   #:use-module (ice-9 regex) ;;list-matches
   #:use-module  (srfi srfi-19)   ;; date time
-
   #:export (two-weeks-ago
 	    all-chars
 	    conman-store-dir
 	    days-ago
+	    three-years-ago
 	    max-arts
 	    laspng
 	    sender
 	    bcc-recipient
 	    personal-email
 	    home-dir
+	    unsubscribe-file
 	    ))
 
 ;;(define conman-store-dir "conmanstorepath") ;;this will be modified upon install
@@ -21,15 +22,20 @@
 (define bcc-recipient "mbc2025@labsolns.com")
 (define personal-email "mbcladwell@labsolns.com")
 (define home-dir "/home/ubuntu")
+(define unsubscribe-file (string-append home-dir "/conman/unsubscribe.json"))	 
 
-(define days-ago 14) ;; how many days ago to I want to analyze?
+(define days-ago 91) ;; how many days ago to I want to analyze? usually 14
 ;; 14*60*60*24 = 1209600
 ;; 15*60*60*24 =  1296000
+(define duration (time-difference (make-time time-utc  0 (* 86400 days-ago)) (make-time time-utc  0 0)))
+(define two-weeks-ago (date->string  (time-utc->date (subtract-duration (current-time) duration)) "~Y/~m/~d"))
 
 (define max-arts "30") ;;maximum number of articles to pull
 
-(define duration (time-difference (make-time time-utc  0 (* 86400 days-ago)) (make-time time-utc  0 0)))
-(define two-weeks-ago (date->string  (time-utc->date (subtract-duration (current-time) duration)) "~Y/~m/~d"))
+(define years-ago 3)
+(define years-ago-in-days (* 365 years-ago))
+(define duration2 (time-difference (make-time time-utc  0 (* 86400 years-ago-in-days)) (make-time time-utc  0 0)))
+(define three-years-ago (date->string  (time-utc->date (subtract-duration (current-time) duration2)) "~Y-~m-~d"))
 (define all-chars "-a-zA-Z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜƏƒƠơƯƯǺǻǼǽǾǿńŻć<>~_+=,.:;()&#@®\" ")
 
 ;;base64 of las.png
