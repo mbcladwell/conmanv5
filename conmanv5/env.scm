@@ -21,7 +21,7 @@
 (define sender "mbc2025@labsolns.com")
 (define bcc-recipient "mbc2025@labsolns.com")
 (define personal-email "mbcladwell@labsolns.com")
-(define home-dir "/home/ubuntu")
+(define home-dir "/home/admin")
 (define unsubscribe-file (string-append home-dir "/conman/unsubscribe.json"))	 
 
 (define days-ago 92) ;; how many days ago to I want to analyze? usually 14      92 + feb date
