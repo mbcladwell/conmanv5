@@ -50,8 +50,8 @@
 	 (email (contact-email a-contact))
 	 (unsubscribes (get-unsubscribes-from-json))
 	 (email (if (member email unsubscribes) "null" email));;if email is in unsubscribe list set to null
-	 (_ (pretty-print (string-append "email test- email: " email " test: " )))
-	 (_ (pretty-print unsubscribes))
+;;	 (_ (pretty-print (string-append "email test- email: " email " test: " )))
+;;	 (_ (pretty-print unsubscribes))
 	 (firstn (contact-firstn a-contact))
 	 (wholen (contact-wholen a-contact))
 	 (pmid (contact-pmid a-contact))
