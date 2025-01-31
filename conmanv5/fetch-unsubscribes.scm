@@ -19,7 +19,7 @@
 
 
 (define (backup-unsubscribes)
-(rename-file unsubscribe-file (string-append home-dir "/conman/bak/unsubscribe-" (date->string  (current-date) "~Y~m~d~I~M") ".json")))
+(rename-file unsubscribe-file (string-append home-dir "/bak/unsubscribe-" (date->string  (current-date) "~Y~m~d~I~M") ".json")))
 
 (define (make-json-for-unsubscribes lst)
   ;;json for import in graph-store
