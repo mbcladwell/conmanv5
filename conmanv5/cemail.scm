@@ -6,7 +6,7 @@
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 pretty-print)
   #:use-module (srfi srfi-19)   ;; date time
-  #:use-module (dbi dbi)
+;;  #:use-module (dbi dbi)
    #:use-module (json)
   #:export (send-report
 	    send-custom-email
