@@ -24,7 +24,7 @@
 (define home-dir "/home/ubuntu")
 (define unsubscribe-file (string-append home-dir "/conman/unsubscribe.json"))	 
 
-(define days-ago 91) ;; how many days ago to I want to analyze? usually 14
+(define days-ago 92) ;; how many days ago to I want to analyze? usually 14      92 + feb date
 ;; 14*60*60*24 = 1209600
 ;; 15*60*60*24 =  1296000
 (define duration (time-difference (make-time time-utc  0 (* 86400 days-ago)) (make-time time-utc  0 0)))
