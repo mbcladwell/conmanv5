@@ -11,14 +11,24 @@
   #:export (send-report
 	    send-custom-email
 	    recurse-send-email
-	    emails-sent	     
+	    emails-sent
+	    emails-rejected
 	    fname-from-email
 	    main
  	    ))
 
 
 (define emails-sent '())  ;;if an email is sent, cons it to this list
+(define emails-rejected '()) ;;an unsubscribe I am reencountering
 
+(define unsubscribes #f) ;;from MySQL all unscubscribes
+
+  (let* (
+	 (p  (open-input-file unsubscribe-file))
+	 (data (json->scm p))
+	 (vec (assoc-ref data "emails"))
+	 )
+     (set! unsubscribes (vector->list vec)))
 
 (define (fname-from-email email)
   (let* ((at-loc (string-index email #\@))
@@ -27,17 +37,20 @@
 	 (c (if b (string-capitalize! (substring a 0 b))  #f)))
     c))
 
-(define (get-unsubscribes-from-json)
-  ;; resource: books tags suffixes (this is also the key in a-list)
-  ;; returns the vector portion converted to list
-  (let* (
-	 (p  (open-input-file unsubscribe-file))
-	 (data (json->scm p))
-	 (vec (assoc-ref data "emails"))
-	 )
-     (vector->list vec)))
+;;use the unsubscribes variable from env
+;; (define (get-unsubscribes-from-json)
+;;   ;; resource: books tags suffixes (this is also the key in a-list)
+;;   ;; returns the vector portion converted to list
+;;   (let* (
+;; 	 (p  (open-input-file unsubscribe-file))
+;; 	 (data (json->scm p))
+;; 	 (vec (assoc-ref data "emails"))
+;; 	 )
+;;      (vector->list vec)))
 
-;;(define a-contact (make-contact "28374827" "3" "qname" "Peter LaPan" "Peter" "LaPan" "GI" "plapan@disroot.org"))
+;;(define a-contact (make-contact "28374827" "3" "qname" "Joe Blow" "Joe" "Blow" "GI" "jblow@acme.org"))
+;; insert into unsubscribe (email) values ('sunguohui@bjut.edu');
+;; insert into unsubscribe (email) values ('biswarup@iiti.ac.in');
 
 (define (send-email a-contact)
   ;;the ref records have journal and title info, search with pmid
@@ -48,10 +61,6 @@
   ;;  ("firstn" . "Rana"))
   (let* (
 	 (email (contact-email a-contact))
-	 (unsubscribes (get-unsubscribes-from-json))
-	 (email (if (member email unsubscribes) "null" email));;if email is in unsubscribe list set to null
-;;	 (_ (pretty-print (string-append "email test- email: " email " test: " )))
-;;	 (_ (pretty-print unsubscribes))
 	 (firstn (contact-firstn a-contact))
 	 (wholen (contact-wholen a-contact))
 	 (pmid (contact-pmid a-contact))
@@ -59,8 +68,16 @@
 ;;	 (_ (pretty-print (@@ (conmanv5 recs) ref-records)))
 	 (title (reference-title (cdr ref)))
 	 (journal (reference-journal (cdr ref)))
-	 (the-list (list (cons "email" email) (cons "journal" journal)(cons "title" title)(cons "firstn" firstn)))
 	 (for-report (list (cons "wholen" wholen)(cons "email" email)))
+;;	 (unsubscribes (get-unsubscribes-from-json))
+	 (email (if (member email unsubscribes)
+		    (begin
+		      (set! emails-rejected (cons for-report emails-rejected))
+		      "null" )
+		    email));;if email is in unsubscribe list set to null
+;;	 (_ (pretty-print (string-append "email test- email: " email " test: " )))
+;;	 (_ (pretty-print unsubscribes))
+	 (the-list (list (cons "email" email) (cons "journal" journal)(cons "title" title)(cons "firstn" firstn)))
 	 (dummy (if (string= email "null") #f
 		    (begin
 		      (send-custom-email the-list);;comment this out to send report only
@@ -116,18 +133,21 @@
 	 )
 	 #f))
 
-(define (send-report lst alist)
+(define (send-report lst)
   ;; lst is the stats
   ;; alist is emails that were sent, migt be null
+  ;; blist is emails rejected because they were unsubscribed
   ;; (list (cons "wholen" wholen)(cons "email" email)) etc loop over to pull out names and emails
   (let* (
-	 (str1 (string-append "From: " sender "\nTo: " personal-email "\nSubject: conman report"))
+	 (str1 (string-append "From: " sender "\nTo: " personal-email "\nSubject: conman report\n\n"))
 	 (str2 (string-append "Article count: " (cdr (assoc "article" lst)) "\n"))
 	 (str3 (string-append "Author count: " (cdr (assoc "author" lst)) "\n"))
 	 (str4 (string-append "Author find count: " (cdr (assoc "author-find" lst)) "\n"))
 	 (str5 (string-append "Elapsed time: " (cdr (assoc  "elapsed-time" lst)) " minutes.\n\n"))
-	 (str6 (if (null?  alist) "null" (build-sent-list alist "")))
-	 (txt-composite (string-append str1 str2 str3 str4 str5 str6))
+	 (str6 (if (null?  emails-sent) "null" (build-sent-list emails-sent "")))
+	 (str7 "\n\n=====unsubscribes=====\n\n")
+	 (str8 (if (null?  emails-rejected) "null" (build-sent-list emails-rejected "")))
+	 (txt-composite (string-append str1 str2 str3 str4 str5 str6 str7 str8))
 	 (txt-file-name (get-rand-file-name "rnd" "txt"))
 	 (p2  (open-output-file txt-file-name))
 	 (dummy (begin

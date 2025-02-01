@@ -1,6 +1,7 @@
 (define-module (conmanv5 env)
   #:use-module (ice-9 regex) ;;list-matches
   #:use-module  (srfi srfi-19)   ;; date time
+  #:use-module (json)
   #:export (two-weeks-ago
 	    all-chars
 	    conman-store-dir
@@ -21,10 +22,11 @@
 (define sender "mbc2025@labsolns.com")
 (define bcc-recipient "mbc2025@labsolns.com")
 (define personal-email "mbcladwell@labsolns.com")
-(define home-dir "/home/admin/conman")
+(define home-dir "/home/mbc/conman")
 (define unsubscribe-file (string-append home-dir "/unsubscribe.json"))	 
 
-(define days-ago 92) ;; how many days ago to I want to analyze? usually 14      92 + feb date
+
+(define days-ago 93) ;; how many days ago to I want to analyze? usually 14      92 + feb date
 ;; 14*60*60*24 = 1209600
 ;; 15*60*60*24 =  1296000
 (define duration (time-difference (make-time time-utc  0 (* 86400 days-ago)) (make-time time-utc  0 0)))

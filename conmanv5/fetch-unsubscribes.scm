@@ -48,6 +48,5 @@
 	    (backup-unsubscribes)
 	    (make-json-for-unsubscribes all-emails))))))
 
-;; guix shell --manifest=manifest.scm -- guile -e '(conmanv5 fetch-unsubscribes)' -L . -s ./conmanv5.scm
-
+;; guix shell --manifest=/home/mbc/projects/autostall/conmanv5/manifest.scm -- guile -L . -e '(conmanv5 fetch-unsubscribes)' -s conmanv5/fetch-unsubscribes.scm
   

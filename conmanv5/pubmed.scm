@@ -150,7 +150,7 @@
 	 (affils-alist '())
 	 (affils-alist (if (null? author-records) #f (get-affils-alist the-body )))
 	 (author-records2 (if (null? affils-alist) #f (recurse-update-contact-records 1 pmid indexed-auth-lst author-records affils-alist '())))
-	 (_ (pretty-print author-records2))
+;;	 (_ (pretty-print author-records2))
 ;;	 (author-records2 (if  affils-alist (recurse-update-contact-records 1 pmid indexed-auth-lst author-records affils-alist '()) #f ))
 	 (author-records3 (if (null? author-records2) #f (recurse-get-missing-email author-records2 '())))
 ;;	 (author-records3 (if  author-records2 (recurse-get-missing-email author-records2 '()) #f))
@@ -162,10 +162,6 @@
 	 (dummy4 (if (null? author-records4) #f (recurse-send-email author-records4) ))
 	 )     
        #f
-    ;; (begin
-    ;;   (pretty-print "unique author contacts: ")
-    ;;   (pretty-print  author-records4)
-    ;;   )
     ))
 
 

@@ -20,7 +20,7 @@
 
 ;;2024-01-30 use guile -e '(conmanv5)' -L . -s ./conmanv5.scm blah from project directory
 
-;; guix shell --manifest=manifest.scm -- guile -e '(conmanv5)' -L . -s ./conmanv5.scm
+;; guix shell --manifest=/home/mbc/projects/autostall/conmanv5/manifest.scm -- guile -e '(conmanv5)' -L . -s ./conmanv5.scm
 
 (define (main args)
   ;; args: '( "script name" "past days to query" "Number of articles to pull")
@@ -32,7 +32,7 @@
 	 (stop-time (current-time time-monotonic))
 	 (elapsed-time (ceiling (/ (time-second (time-difference stop-time start-time)) 60)))
 	 (stats-list (get-stats-list elapsed-time))
-	 (dummy7 (send-report stats-list  (@@ (conmanv5 cemail) emails-sent)))
+	 (dummy7 (send-report stats-list ))
 	 )
 ;;   (pretty-print a)
     (pretty-print (string-append "Elapsed time: " (number->string  elapsed-time) " minutes." ))
