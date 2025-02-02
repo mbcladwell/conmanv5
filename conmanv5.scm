@@ -22,6 +22,9 @@
 
 ;; guix shell --manifest=/home/mbc/projects/autostall/conmanv5/manifest.scm -- guile -e '(conmanv5)' -L . -s ./conmanv5.scm
 
+;;on aws from ~/conmanv5 directory
+;; guile -e '(conmanv5)' -L . -s ./conmanv5.scm
+
 (define (main args)
   ;; args: '( "script name" "past days to query" "Number of articles to pull")
   ;; 2023-10-01 revision requires single arg that is not used
