@@ -18,7 +18,8 @@
 ;;export GUILE_LOAD_PATH=/gnu/store/5yvzilh78996627i8avq532sl2c03i95-gnutls-3.6.15/share/guile/site/3.0:/home/admin/conmanv5:${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH
 ;;/gnu/store/m5iprcg6pb5ch86r9agmqwd8v6kp7999-guile-3.0.5/bin/guile -e '(conmanv5)' -s /home/admin/conmanv5/conmanv5.scm blah
 
-;;2024-01-30 use guile -e '(conmanv5)' -L . -s ./conmanv5.scm blah from project directory
+;;2025-01-30 use guile -e '(conmanv5)' -L . -s ./conmanv5.scm from project directory
+;; 3 2 * * * /home/admin/.guix-profile/bin/conman.sh --file=/home/admin/.msmtprc >/home/admin/conman.log 2>&1
 
 ;; guix shell --manifest=/home/mbc/projects/autostall/conmanv5/manifest.scm -- guile -e '(conmanv5)' -L . -s ./conmanv5.scm
 

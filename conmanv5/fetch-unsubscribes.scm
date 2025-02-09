@@ -49,4 +49,6 @@
 	    (make-json-for-unsubscribes all-emails))))))
 
 ;; guix shell --manifest=/home/mbc/projects/autostall/conmanv5/manifest.scm -- guile -L . -e '(conmanv5 fetch-unsubscribes)' -s conmanv5/fetch-unsubscribes.scm
+
+;; scp -i labsolns.pem /home/mbc/conman/unsubscribe.json admin@ec2-13-58-241-63.us-east-2.compute.amazonaws.com:./conman/
   

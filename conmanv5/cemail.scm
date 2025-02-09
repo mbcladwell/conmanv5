@@ -21,14 +21,13 @@
 (define emails-sent '())  ;;if an email is sent, cons it to this list
 (define emails-rejected '()) ;;an unsubscribe I am reencountering
 
-;;(define unsubscribes #f) ;;from MySQL all unscubscribes
+(define unsubscribes #f) ;;from MySQL all unscubscribes
 
-  ;; (let* (
-  ;; 	 (p  (open-input-file unsubscribe-file))
-  ;; 	 (data (json->scm p))
-  ;; 	 (vec (assoc-ref data "emails"))
-  ;; 	 )
-  ;;    (set! unsubscribes (vector->list vec)))
+(let* ((p  (open-input-file unsubscribe-file))
+       (data (json->scm p))
+       (vec (assoc-ref data "emails"))
+       )
+  (set! unsubscribes (vector->list vec)))
 
 (define (fname-from-email email)
   (let* ((at-loc (string-index email #\@))
@@ -70,12 +69,12 @@
 	 (journal (reference-journal (cdr ref)))
 	 (for-report (list (cons "wholen" wholen)(cons "email" email)))
 ;;	 (unsubscribes (get-unsubscribes-from-json))
-	 (sql (format #f "SELECT * FROM unsubscribe WHERE email LIKE '~a';" email))      
-         (ciccio (dbi-open "mysql" "plapan_conman_ad:welcome:plapan_conman:tcp:192.254.187.215:3306"))
-         (_ (dbi-query ciccio sql))      
+	 ;; (sql (format #f "SELECT * FROM unsubscribe WHERE email LIKE '~a';" email))      
+         ;; (ciccio (dbi-open "mysql" "plapan_conman_ad:welcome:plapan_conman:tcp:192.254.187.215:3306"))
+         ;; (_ (dbi-query ciccio sql))      
 ;;         (email (if (dbi-get_row ciccio) "null" email));;if email is in unsubscribe list set to null
-;;	 (email (if (member email unsubscribes)
-	 (email (if (dbi-get_row ciccio)
+	 (email (if (member email unsubscribes)
+;;	 (email (if (dbi-get_row ciccio)
 		    (begin
 		      (set! emails-rejected (cons for-report emails-rejected))
 		      "null" )
