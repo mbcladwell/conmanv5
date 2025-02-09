@@ -23,11 +23,12 @@
 
 (define unsubscribes #f) ;;from MySQL all unscubscribes
 
-(let* ((p  (open-input-file unsubscribe-file))
-       (data (json->scm p))
-       (vec (assoc-ref data "emails"))
-       )
-  (set! unsubscribes (vector->list vec)))
+;;cannot have this in /gnu/store
+;; (let* ((p  (open-input-file unsubscribe-file))
+;;        (data (json->scm p))
+;;        (vec (assoc-ref data "emails"))
+;;        )
+;;   (set! unsubscribes (vector->list vec)))
 
 (define (fname-from-email email)
   (let* ((at-loc (string-index email #\@))
@@ -68,7 +69,8 @@
 	 (title (reference-title (cdr ref)))
 	 (journal (reference-journal (cdr ref)))
 	 (for-report (list (cons "wholen" wholen)(cons "email" email)))
-;;	 (unsubscribes (get-unsubscribes-from-json))
+         ;;need this when using /gnu/store
+	 (unsubscribes (get-unsubscribes-from-json))
 	 ;; (sql (format #f "SELECT * FROM unsubscribe WHERE email LIKE '~a';" email))      
          ;; (ciccio (dbi-open "mysql" "plapan_conman_ad:welcome:plapan_conman:tcp:192.254.187.215:3306"))
          ;; (_ (dbi-query ciccio sql))      
