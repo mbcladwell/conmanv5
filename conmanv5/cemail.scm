@@ -30,6 +30,9 @@
 ;;        )
 ;;   (set! unsubscribes (vector->list vec)))
 
+
+
+
 (define (fname-from-email email)
   (let* ((at-loc (string-index email #\@))
 	 (a (substring email 0 at-loc))
@@ -38,15 +41,15 @@
     c))
 
 ;;use the unsubscribes variable from env
-;; (define (get-unsubscribes-from-json)
-;;   ;; resource: books tags suffixes (this is also the key in a-list)
-;;   ;; returns the vector portion converted to list
-;;   (let* (
-;; 	 (p  (open-input-file unsubscribe-file))
-;; 	 (data (json->scm p))
-;; 	 (vec (assoc-ref data "emails"))
-;; 	 )
-;;      (vector->list vec)))
+(define (get-unsubscribes-from-json)
+  ;; resource: books tags suffixes (this is also the key in a-list)
+  ;; returns the vector portion converted to list
+  (let* (
+	 (p  (open-input-file unsubscribe-file))
+	 (data (json->scm p))
+	 (vec (assoc-ref data "emails"))
+	 )
+     (vector->list vec)))
 
 ;;(define a-contact (make-contact "28374827" "3" "qname" "Joe Blow" "Joe" "Blow" "GI" "jblow@acme.org"))
 ;; insert into unsubscribe (email) values ('sunguohui@bjut.edu');
