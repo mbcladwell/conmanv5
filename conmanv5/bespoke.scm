@@ -106,4 +106,5 @@
 ;; guix shell --manifest=/home/mbc/projects/autostall/conmanv5/manifest.scm -- guile -L . -e '(conmanv5 bespoke)' -s conmanv5/bespoke.scm first-name email 'mytext in quotes'
   
 
-
+;; from local ~/projects/conmanv5 after modifying env.scm to chang home directory to /home/mbc
+;; guile -L . -e '(conmanv5 bespoke)' -s conmanv5/bespoke.scm Ben bkleinstiver@mgh.harvard.edu 'I saw your post-bac research opportunity solicitation on X. I can help with LIMS and/or assay development. Check out our software - LIMS*Nucleus.'
